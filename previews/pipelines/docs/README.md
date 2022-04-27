@@ -18,9 +18,9 @@ We are introducing a new and improved way of building Machine Learning Pipelines
 ### How to get started?
 Pre-requisites:
 1. AzureML Workspace with a compute cluster. We strongly recommend using an existing test or sandbox Workspace or creating a new Workspace because the private preview bits can have bugs. DO NOT TRY THE PREVIEW ON A WORKSPACE WITH PRODUCTION ASSETS.
-2. If you do not have the Azure CLI installed, follow the installation instructions at https://docs.microsoft.com/cli/azure/install-azure-cli. 2.15 is the minimum version your need. Check the version with `az version`. You can use Azure Cloud Shell which has Azure CLI pre-installed: https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart.
-3. Install and configure the CLI 2.0 as documented here: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli
-4. (Optional) Familiarize yourself with CLI 2.0 Jobs: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli
+2. If you do not have the Azure CLI installed, follow the installation instructions at https://docs.microsoft.com/cli/azure/install-azure-cli. 2.15 is the minimum version your need. Check the version with `az version`. You can use Azure Cloud Shell which has Azure CLI pre-installed: https://docs.microsoft.com/azure/cloud-shell/quickstart.
+3. Install and configure the CLI 2.0 as documented here: https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli
+4. (Optional) Familiarize yourself with CLI 2.0 Jobs: https://docs.microsoft.com/azure/machine-learning/how-to-train-cli
 
 Steps:
 1. Make sure your setup is working with either of the list commands: `az ml compute list`, `az ml jobs list`, or `az ml data list`
@@ -59,7 +59,7 @@ az extension remove -n ml; az extension remove -n azure-cli-ml
 az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2/ml-0.0.12_october_cand-py3-none-any.whl --yes
 ```
 
-3. Follow the setup instructions as documented here: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli#set-up
+3. Follow the setup instructions as documented here: https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli#set-up
 
 
 4. Enable private preview features as explained in Step 2 above.

@@ -14,12 +14,12 @@ Interactive job is supported on **AMLArc Compute** and will be available on AML 
     - If you are on Kubernetes onprem, you need to configure `amloperator.entryPointMachineForEndpoint` as one of the machines (IP or machine name) in Kubernetes cluster.
 
 **Note:** The 2 steps above are usually done by your admin.
-- (Optional) [an AzureML dataset is created](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-connect-data-ui) if your input data is downloaded in Azure blob. You can skip this step if you will download data after you log in to the interactive job.
+- (Optional) [an AzureML dataset is created](https://docs.microsoft.com/azure/machine-learning/how-to-connect-data-ui) if your input data is downloaded in Azure blob. You can skip this step if you will download data after you log in to the interactive job.
 
 ## Get started
 ### Submit an interactive job via AzureML 2.0 CLI
-1. [Install, set up and get familiar with the 2.0 CLI](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
-1. Create a job yaml `job.yaml` with below content. Make sure to replace `your job name` and `your attached amlarc compute name` with your own values. If you want to use custom environment, follow the examples in [this tutorial](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli). 
+1. [Install, set up and get familiar with the 2.0 CLI](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli).
+1. Create a job yaml `job.yaml` with below content. Make sure to replace `your job name` and `your attached amlarc compute name` with your own values. If you want to use custom environment, follow the examples in [this tutorial](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli). 
 ```dotnetcli
 name: <your job name> #job name needs to be updated every time you submit it
 command: sleep infinity # you can add other commands before "sleep infinity" but make sure "sleep infinity" is put at the end so that the resource is reserved.

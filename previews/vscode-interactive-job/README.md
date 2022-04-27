@@ -8,17 +8,17 @@ Interactive job is supported on **AMLArc Compute** and will be available on AmlC
 - When you deploy the AzureML extension to your Azure Arc enabled Kubernetes cluster (`az k8s-extension create`), make sure you append the configurations to turn on interactive job.
     - If you are running on AKS, append `amloperator.enableInteractiveProxy=True amloperator.interactiveProxyPort=4443` in `--configuration-settings`
     - If you are on Kubernetes onprem, you need to configure `amloperator.entryPointMachineForEndpoint` as one of the machines (IP or machine name) in Kubernetes cluster.
-- (Optional) [an AzureML dataset is created](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-connect-data-ui) if your input data is downloaded in Azure blob. You can skip this step if you will download data after you log in to the interactive job.
+- (Optional) [an AzureML dataset is created](https://docs.microsoft.com/azure/machine-learning/how-to-connect-data-ui) if your input data is downloaded in Azure blob. You can skip this step if you will download data after you log in to the interactive job.
 
 ## Get started
 ### Submitting an interactive job from within VS Code
-1. Follow this guide to [install, set up and get familiar with the 2.0 CLI](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
+1. Follow this guide to [install, set up and get familiar with the 2.0 CLI](https://docs.microsoft.com/azure/machine-learning/how-to-configure-cli).
 1. Install [VS Code](https://code.visualstudio.com/Download) and the [Azure Machine Learning extension](https://aka.ms/aml-ext), and sign into your Azure account.
 1. Set your default workspace which should include your AmlArc Compute and Dataset resources.
 ![default workspace toolbar option](./media/default_workspace_toolbar.png)
 1. Open the command palette (Ctrl+Shift+P on Windows, Cmd+Shift+P on OS X) and invoke the following command: "Azure ML: Create Job". This will open a job configuration template for you in the editor.
 ![command to create template](./media/job_command.png)
-1. Edit the YAML template to include your desired code, environment, and dataset. If you'd like to use a custom environment, follow the examples in this [tutorial](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli). You can invoke completions through the Azure Machine Learning extension when editing your YAML file to see a list of your compute, environment, and dataset resources.
+1. Edit the YAML template to include your desired code, environment, and dataset. If you'd like to use a custom environment, follow the examples in this [tutorial](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli). You can invoke completions through the Azure Machine Learning extension when editing your YAML file to see a list of your compute, environment, and dataset resources.
 ![yaml template editing](./media/template_editing.png)
 1. Add Jupyter and VS Code interaction endpoints with ports if you wish to specify the port you want the servers to run on. Note that the VS Code port is for a websocket server used to establish a communication channel between your local VS Code client and the remote VS Code server.
 1. Once you're satisfied with the state of the job YAML, right-click on the file and invoke the "Azure ML: Create Resource" command. This will open a new terminal session for you and run the appropriate Azure CLI command to submit your job.
