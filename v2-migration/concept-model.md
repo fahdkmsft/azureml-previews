@@ -1,23 +1,18 @@
 ---
-title: 'What is v2?'
+title: 'What is a model?'
 titleSuffix: Azure Machine Learning
-description: What is v2?
+description: What is a model?
 services: machine-learning
 ms.service: machine-learning
 ms.subservice: core
-ms.topic:
-author:
+ms.topic: conceptual
 ms.author:
+author:
 ms.date:
-ms.reviewer: 
-ms.custom: devx-track-azurecli, devplatv2
 ---
 
-# What is v2?
 
-[TODO]
-
-## Prerequisites
+# What is an Azure Machine Learning model?
 
 [TODO]
 

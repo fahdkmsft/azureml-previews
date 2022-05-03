@@ -1,7 +1,7 @@
 ---
-title: 'Forward compatibility'
+title: 'Migrate from v1 to v2'
 titleSuffix: Azure Machine Learning
-description: Forward compatibility. Details on using entities from v2 in v1.
+description: Migrate from v1 to v2.
 services: machine-learning
 ms.service: machine-learning
 ms.subservice: core
@@ -13,7 +13,7 @@ ms.reviewer:
 ms.custom: devx-track-azurecli, devplatv2
 ---
 
-# Forward compatibility
+# Migrate from v1 to v2?
 
 [TODO]
 
