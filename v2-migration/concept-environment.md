@@ -78,10 +78,6 @@ The hash isn't affected by the environment name or version. If you rename your e
 
 The environment's computed hash value is compared with those in the Workspace and global ACR, or on the compute target (local runs only). If there is a match then the cached image is pulled and used, otherwise an image build is triggered.
 
-The following diagram shows three environment definitions. Two of them have different names and versions but identical base images and Python packages, which results in the same hash and corresponding cached image. The third environment has different Python packages and versions, leading to a different hash and cached image.
-
-![Diagram of environment caching and Docker images](./media/concept-environments/environment-caching.png)
-
 Actual cached images in your workspace ACR will have names like `azureml/azureml_e9607b2514b066c851012848913ba19f` with the hash appearing at the end.
 
 >[!IMPORTANT]
