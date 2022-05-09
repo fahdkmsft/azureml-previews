@@ -16,13 +16,6 @@ ms.date: 5/13/22
 
 Azure Machine Learning environments define the execution environments for your jobs or deployments and encapsulate the dependencies for your code. Azure ML uses the environment specification to create the Docker container that your training or scoring code runs in on the specified compute target. You can define an environment from a conda specification, Docker image, or Docker build context.
 
-You can use an `Environment` object on your local compute to:
-
-* Develop your training script.
-* Reuse the same environment on Azure Machine Learning Compute for model training at scale.
-* Deploy your model with that same environment.
-* Revisit the environment in which an existing model was trained.
-
 ## Types of Environments 
 
 There are two types of environments in Azure ML: curated and custom environments. Curated environments are predefined environments containing popular ML frameworks and tooling. Custom environments are user-defined and can be created via `az ml environment create`.
