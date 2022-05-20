@@ -14,7 +14,7 @@ ms.date:
 
 # Overview of interoperability of workspace
 
-[TODO]
+The workspace functionally remains unchanged with the new API platform. There are two network-related changes you must be aware, in the way that the workspace is configured.
 
 ## Backward compatibility
 
