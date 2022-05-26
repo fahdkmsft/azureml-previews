@@ -1,7 +1,7 @@
 
 # Schedule Azure Machine Learning pipelines (preview)
 
-In this article, you'll learn how to use CLI v2 and Python SDK v2 (preview) schedule Azure Machine Learning pipelines. You can create a schedule based on cron or recurrence time settings. Time-based schedules can be used to take care of routine tasks, such as regular retraining or batch predictions. After learning how to create schedules, you'll learn how to retrieve and disable them. 
+In this article, you'll learn how to schedule Azure Machine Learning pipelines using CLI v2 and Python SDK v2. You can create a time-based schedule either using crontab expression or recurrence time settings. Time-based schedules can be used to take care of routine tasks, such as regular retraining or batch predictions. After learning how to create schedules, you'll learn how to retrieve and disable them. 
 
 * [Use CLI v2 to create schedules](#Use-CLI-v2-to-schedule-a-pipeline-job)
 
@@ -33,14 +33,14 @@ In this article, you'll learn how to use CLI v2 and Python SDK v2 (preview) sche
 
 In this section, you'll learn how to create a time-based schedule for a pipeline job using CLI v2.
 
-> [!IMPORTANT]
+> [!NOTE]
 > Schedule can be defined only at the pipeline job level. If any job inside the pipeline has a schedule defined, the pipeline job creation will fail.
 
 ### Create cron schedule
 
-This section will show how to create a cron schedule based on standard crontab expression for a pipeline job. You can find the sample [cron scheduled pipeline yaml file](https://github.com/Azure/azureml-examples/tree/sdk-preview/cli/jobs/pipelines-with-components/basics/hello-pipeline-cron-schedule.yml) in the examples repository.
+This section will show how to create a cron schedule based on standard crontab expression for a pipeline job. You can find the [sample pipeline yaml file](https://github.com/Azure/azureml-examples/tree/sdk-preview/cli/jobs/pipelines-with-components/basics/hello-pipeline-cron-schedule.yml) in the examples repository.
 
-The following sample shows a pipeline job is scheduled to be triggered at 16:15PM every Monday in Eastern Standard Time (UTC-4). And its status is disabled.
+The following sample shows a pipeline job is scheduled to be triggered at 16:15PM every Monday in Eastern Standard Time (UTC-4). And the status of `schedule` is disabled, which means the sheduled jobs will not be triggered.
 
 ```YAML
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
@@ -99,7 +99,7 @@ The `schedule` section defines the schedule details and contains following prope
 
 This section will show how to create a recurrence schedule for a pipeline job. You can find the sample [recurrence scheduled pipeline yaml file](https://github.com/Azure/azureml-examples/tree/sdk-preview/cli/jobs/pipelines-with-components/basics/hello-pipeline-recurrence-schedule.yml) in the examples repository.
 
-The following sample shows a pipeline job is scheduled to be triggered at the 15th, 0th, and 30th minutes of the 10th, 11th, 12th hour of every Monday, Wednesday and Friday, starts from 2022-05-10T10:15:00 in Pacific Standard Time (UTC-7). And the status is disabled.
+The following sample shows a pipeline job is scheduled to be triggered at the 15th, 0th, and 30th minutes of the 10th, 11th, 12th hour of every Monday, Wednesday and Friday, starts from 2022-05-10T10:15:00 in Pacific Standard Time (UTC-7). And the status of `schedule` is disabled.
 
 ```YAML
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
