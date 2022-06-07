@@ -1,8 +1,8 @@
-# [Private Preview] Compare Runs
+# [Private Preview] Compare Jobs
 
 ## Overview 
 
-Users can now compare more than one run in the run list view to view differences in parameters, metrics, and tags. 
+Users can now compare more than one job in the job list view to view differences in parameters, metrics, and tags. 
 This feature is currently enabled for all internal users at Microsoft. For external users looking to join the private preview, please fill out this [form](https://forms.office.com/r/KkZtVUxgmv).
 
 ## How to use the feature
@@ -11,11 +11,11 @@ This feature is currently enabled for all internal users at Microsoft. For exter
 
 ![alt text](./media/1.png)
 
-2. Choose the experiment that contains the runs you would like to compare or if the runs are across different experiments select the `All runs tab`.
+2. Choose the experiment that contains the jobs you would like to compare or if the jobs are across different experiments select the `All jobs tab`.
 
 ![alt text](./media/2.png)
 
-3. Select more than one run that you would like to compare (up to 10) and click `Compare` at the top.
+3. Select more than one job that you would like to compare (up to 10) and click `Compare` at the top.
 
 ![alt text](./media/3.png)
 ![alt text](./media/4.png)
