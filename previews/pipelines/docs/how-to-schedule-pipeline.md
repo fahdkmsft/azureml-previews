@@ -7,6 +7,9 @@ In this article, you'll learn how to schedule Azure Machine Learning pipelines u
 
 * [Use Python SDK v2 to create schedules](#use-python-sdk-v2-to-schedule-a-pipeline-job)
 
+> [!NOTE]
+> Schedule is in **private preview**. Please set `AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=TRUE`.
+
 
 ## Prerequisites
 
@@ -525,6 +528,7 @@ Current schedule supports following timezones. The key (left to `=`) can be used
 
 - `az ml job update` does not support to update a job's schedule properties.
 - `az ml job download` or `ml_client.jobs.download()` does not support the job initilizing the schedule.
+- You cannot cancel a job which initilizes schedule currently.
 - Updating `experiment_name` of a job is not supported.
 - In the studio portal, you cannot delete a pipeline job which initilizes schedule.
 
