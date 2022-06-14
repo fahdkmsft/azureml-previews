@@ -262,6 +262,144 @@ az ml job create -f ${PROFILING_JOB_YAML_FILE_PATH}
 
 Please use `az ml online-endpoint delete` to delete the test online endpoints and online deployment after completing profiling.
 
+## Use model profiler with secured managed online endpoints
+
+If you want to secure inbound/outbound communications with managed online endpoints, follow [use network isolation with managed online endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-online-endpoint?tabs=model). Please refer to following steps when you want to use model profiler to benchmark your model performance.
+
+### Prerequisites
+
+You should have workspace, secured resources, scoring VM and secured managed online endpoint according [document](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-online-endpoint?tabs=model). Please ssh to your scoring VM, which you use to create secured online endpoint.
+
+* Set the defaults for the Azure CLI. To avoid passing in the values for your subscription, workspace, and resource group multiple times:
+  
+  ```bash
+  az account set --subscription <subscription ID>
+  az configure --defaults workspace=<Azure Machine Learning workspace name> group=<resource group>
+  ```
+
+* Below steps depend on the same workspace and secured resources when creating the secured managed online endpoint.
+
+### Create a compute to host the profiler
+
+You will need a compute to host the profiler, send requests to the online endpoint and generate performance report.
+
+* Before create a compute, you need add below inbound rules to Network security group of your subnet.
+
+  ```json
+  {
+    "name": "Inbound_BatchNodeManagement_29877",
+    "properties": {
+      "protocol": "TCP",
+      "sourcePortRange": "*",
+      "destinationPortRange": "29877",
+      "sourceAddressPrefix": "BatchNodeManagement OR Internet OR BatchNodeManagement.<region>",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "priority": "Higher than 65500",
+      "direction": "Inbound"
+    }
+  }
+  {
+    "name": "Inbound_BatchNodeManagement_29876",
+    "properties": {
+      "protocol": "TCP",
+      "sourcePortRange": "*",
+      "destinationPortRange": "29876",
+      "sourceAddressPrefix": "BatchNodeManagement OR Internet OR BatchNodeManagement.<region>",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "priority": "Higher than 65500",
+      "direction": "Inbound"
+    }
+  }
+  ```
+  For example, add NSG rule through Azure Portal:
+
+  ![image](https://github.com/yumengsu/image_store/blob/main/add_inbound_rule.png?raw=true)
+
+* This compute is NOT the same one that you used above to deploy your model. Please choose a compute SKU with proper network bandwidth (considering the inference request payload size and profiling traffic, we'd recommend Standard_F4s_v2) in the **same region** as the online endpoint.
+
+  ```bash
+  az ml compute create --name $PROFILER_COMPUTE_NAME --size $PROFILER_COMPUTE_SIZE --identity-type SystemAssigned --type amlcompute
+  ```
+
+* Create proper role assignment for accessing online endpoint resources. The compute needs to have contributor role to the machine learning workspace. For more information, see [Assign Azure roles using Azure CLI](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli).
+
+  ```bash
+  compute_info=`az ml compute show --name $PROFILER_COMPUTE_NAME --query '{"id": id, "identity_object_id": identity.principal_id}' -o json`
+  workspace_resource_id=`echo $compute_info | jq -r '.id' | sed 's/\(.*\)\/computes\/.*/\1/'`
+  identity_object_id=`echo $compute_info | jq -r '.identity_object_id'`
+  az role assignment create --role Contributor --assignee-object-id $identity_object_id --scope $workspace_resource_id
+  if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
+  ```
+
+### Upload payload file to default blob datastore
+
+* Upload payload file to default blob datastore
+
+  ```bash
+  sudo apt install jq -y
+  default_datastore_info=`az ml datastore show --name workspaceblobstore -o json`
+  account_name=`echo $default_datastore_info | jq '.account_name' | sed "s/\"//g"`
+  container_name=`echo $default_datastore_info | jq '.container_name' | sed "s/\"//g"`
+  connection_string=`az storage account show-connection-string --name $account_name -o tsv`
+  az storage blob upload --container-name $container_name/profiling_payloads --name payload.txt --file $path_to_payload_file --connection-string $connection_string
+  ```
+
+### Create a profiling job
+
+Below is a template yaml file that defines a profiling job.
+
+```yaml
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: >
+  python -m online_endpoints_model_profiler ${{inputs.payload}}
+experiment_name: profiling-job
+display_name: <% SKU_CONNECTION_PAIR %>
+environment:
+  image: mcr.microsoft.com/azureml/online-endpoints-model-profiler:latest
+environment_variables:
+  ONLINE_ENDPOINT: "<% ENDPOINT_NAME %>"
+  DEPLOYMENT: "<% DEPLOYMENT_NAME %>"
+  PROFILING_TOOL: "<% PROFILING_TOOL %>"
+  DURATION: "<% DURATION %>"
+  CONNECTIONS: "<% CONNECTIONS %>"
+  TARGET_RPS: "<% TARGET_RPS %>"
+  CLIENTS: "<% CLIENTS %>"
+  TIMEOUT: "<% TIMEOUT %>"
+  THREAD: "<% THREAD %>"
+compute: "azureml:<% PROFILER_COMPUTE_NAME %>"
+inputs:
+  payload:
+    type: uri_file
+    path: azureml://datastores/workspaceblobstore/paths/profiling_payloads/payload.txt
+```
+
+### Create a profiling job with azure cli and ml extension
+
+* Update the profiling job yaml template with your own values and create a profiling job.
+
+  ```bash
+  az ml job create -f ${PROFILING_JOB_YAML_FILE_PATH}
+  ```
+
+* Check profiling job status.
+
+  ```bash
+  az ml job show -n $JOB_NAME
+  ```
+
+
+### Download job output files
+  
+Use the following command to download job output files:
+
+```bash
+az ml job download --name $JOB_NAME --download-path $JOB_OUTPUT_LOCAL_PATH
+```
+
+### Cleanup
+
+Please use `az ml online-endpoint delete` to delete the test online endpoints and online deployment after completing profiling.
+
 ## Contact us
 
 For any questions, bugs and requests of new features, please contact us at [mprof@microsoft.com](mailto:mprof@microsoft.com)
