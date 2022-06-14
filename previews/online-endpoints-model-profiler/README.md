@@ -264,26 +264,30 @@ Please use `az ml online-endpoint delete` to delete the test online endpoints an
 
 ## Use model profiler with secured managed online endpoints
 
-If you want to secure inbound/outbound communications with managed online endpoints, follow [use network isolation with managed online endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-online-endpoint?tabs=model). Please refer to following steps when you want to use model profiler to benchmark your model performance.
+If you want to secure inbound/outbound communications with managed online endpoints, please follow [use network isolation with managed online endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-online-endpoint?tabs=model). Please refer to the following steps should you choose to use model profiler to benchmark your model performance.
 
 ### Prerequisites
+* Please prepare below resources by following this [document](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-online-endpoint?tabs=model):
 
-You should have workspace, secured resources, scoring VM and secured managed online endpoint according [document](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-online-endpoint?tabs=model). Please ssh to your scoring VM, which you use to create secured online endpoint.
+  * an AzureML workspace
+  * secured resources in a vnet
+  * a scoring VM in the same vnet as the above resources
+  * a secured managed online endpoint to profile against
 
-* Set the defaults for the Azure CLI. To avoid passing in the values for your subscription, workspace, and resource group multiple times:
+* Please ssh to your scoring VM.
+
+* Set the defaults for the Azure CLI. To avoid passing in the values for your subscription, workspace, and resource group for multiple times:
   
   ```bash
   az account set --subscription <subscription ID>
   az configure --defaults workspace=<Azure Machine Learning workspace name> group=<resource group>
   ```
 
-* Below steps depend on the same workspace and secured resources when creating the secured managed online endpoint.
-
 ### Create a compute to host the profiler
 
-You will need a compute to host the profiler, send requests to the online endpoint and generate performance report.
+You will need a compute to host the profiler, send requests to the online endpoint and generate performance report. The profiler compute must be created in the same AzureML workspace as the secured managed online endpoint.
 
-* Before create a compute, you need add below inbound rules to Network security group of your subnet.
+* Before creating a compute, you'd need to add below inbound rules to the network security group of your subnet.
 
   ```json
   {
@@ -311,7 +315,7 @@ You will need a compute to host the profiler, send requests to the online endpoi
     }
   }
   ```
-  For example, add NSG rule through Azure Portal:
+  You may choose to add the NSG rules on Azure Portal like below:
 
   ![image](https://github.com/yumengsu/image_store/blob/main/add_inbound_rule.png?raw=true)
 
@@ -321,7 +325,7 @@ You will need a compute to host the profiler, send requests to the online endpoi
   az ml compute create --name $PROFILER_COMPUTE_NAME --size $PROFILER_COMPUTE_SIZE --identity-type SystemAssigned --type amlcompute
   ```
 
-* Create proper role assignment for accessing online endpoint resources. The compute needs to have contributor role to the machine learning workspace. For more information, see [Assign Azure roles using Azure CLI](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli).
+* Create a proper role assignment for accessing the online endpoint. The compute needs to have contributor role to the AzureML workspace of the online endpoint. For more information, see [Assign Azure roles using Azure CLI](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli).
 
   ```bash
   compute_info=`az ml compute show --name $PROFILER_COMPUTE_NAME --query '{"id": id, "identity_object_id": identity.principal_id}' -o json`
@@ -331,9 +335,7 @@ You will need a compute to host the profiler, send requests to the online endpoi
   if [[ $? -ne 0 ]]; then echo "Failed to create role assignment for compute $PROFILER_COMPUTE_NAME" && exit 1; fi
   ```
 
-### Upload payload file to default blob datastore
-
-* Upload payload file to default blob datastore
+### Upload your payload file to the default blob datastore
 
   ```bash
   sudo apt install jq -y
