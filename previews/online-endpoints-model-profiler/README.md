@@ -70,7 +70,7 @@ instance_type: Standard_F2s_v2
 instance_count: 1
 request_settings:
   request_timeout_ms: 3000
-  max_concurrent_requests_per_instance: 1024
+  max_concurrent_requests_per_instance: 1
 ```
 
 ### Create a compute to host the profiler
