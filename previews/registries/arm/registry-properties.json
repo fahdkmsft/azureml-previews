@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "registryName": {
+            "value": "ContosoMLjun14"
+        },
+        // Format is <regionName>-<storage_ac_count>. Use more than 1 account if you expect to bump in azure blob throughtput limits. 
+        "storageLocations": {
+            "value": [
+                "EastUS-1",
+                "EastUS2-1"
+            ]
+        },
+        "acrReplicationLocations": {
+            "value": [
+                "EastUS",
+                "EastUS2"
+            ]
+        }
+    }
+}
