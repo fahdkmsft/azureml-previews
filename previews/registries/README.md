@@ -2,7 +2,7 @@
 
 ### Welcome
 
-* Request access to Registries preview: <todo>
+* Request access to Registries preview: https://forms.office.com/r/VrX6rE2Ut0
 * Template to report bugs, issues, feature requests: https://github.com/Azure/azureml-previews/issues/new?assignees=ManojBableshwar&labels=registries&template=registries-bug.md&title=Registries+bug%3A+ 
 
 
@@ -77,9 +77,13 @@ Linux
 ```
 export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
 ```
-Windows
+Windows Cmd
 ```
 set AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
+```
+Powershell
+```
+$env:AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED = 'true'
 ```
 
 

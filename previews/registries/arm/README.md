@@ -7,9 +7,18 @@ Pre-requsites
 * Install Azure CLI
 * Login to Azure CLI
 
+
+### Step 0
+Clone this repo or make sure you have the following files that are located in [this directory](./): 
+```
+AzureMLRegistry.bicep
+create-registry.sh
+registry-properties.json
+```
+
 ### Step 1
 
-Edit the following in `create-registry.sh`
+Edit the following in `create-registry.sh` (located )
 
 ```
 rg_name="<resource group placeholder>"
