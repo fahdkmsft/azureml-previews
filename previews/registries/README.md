@@ -41,6 +41,13 @@ For Registry specific RBAC permissions, see https://docs.microsoft.com/en-us/azu
 ![Registry RBAC](./images/rbac-permissions.png)
 
 
+#### Comparision to Workspace
+* Assets created in a Workspace can be used only in that specific Workspace but assets created in a Registry can be used in any Workspace in that tenant. 
+* Assets created in a Workspace are referenced as `azureml:<assetname>:<assetversion>` in AzureML CLI V2 YAML. Assets created in a Registry are referenced as `azureml://registries/<registry_name>/<asset_type>/<asset_name>/versions/<asset_version>` when they need to be used in a Workspace. 
+* You can browse Assets created in a Workspace in a the AzureML Studio Workspace UI (Components, Environments, Models, Datasets hubs) where as Assets created in a Registry are available for browsing in the AzureML Studio Registries hub in the global home page (ml.azure.com/home).
+
+
+
 ### Preview Pre-requisites
 
 
@@ -103,17 +110,32 @@ az ml component create --file component.yml --registry-name <registry_name_place
 
 ### How to view assets created in Registries? 
 
+
+#### View with CLI
+
 You can list assets using the CLI
 
 ```
 az ml <asset_type> list --registry-name <registry_name_placeholder>
 ```
 
-Registries are peers of Workspaces. As such the Registries UI hub is located in the AzureML global homepage: ml.azure.com/home. For the time-being you may need to use append a flight to the URL: https://ml.azure.com/registries?flight=GlobalRegistries 
+
+You can show a specific asset using the CLI
+
+```
+az ml <asset_type> show --name <asset_name> --version <asset_version> --registry-name <registry_name_placeholder>
+```
+
+#### View in AzureML Studio 
+The Registries UI hub is located in the AzureML global homepage: ml.azure.com/home. For the time-being you may need to use append a flight to the URL: https://ml.azure.com/registries?flight=GlobalRegistries 
+
 
 ![Registry hub](./images/registry-hub.png)
 
 ### How to use assets from a Registry?
+
+
+#### Use with CLI - Jobs
 
 You use assets from Registries in Jobs and Endpoints created in Workspaces. To do so, the asset name needs a Registry scope qualifier, hence the name of assets living in Workspaces looks like this: 
 
@@ -142,6 +164,26 @@ az ml job create --file pipeline.yml
 ```
 
 ![Sample job using Component from Registry](./images/sample-job.png)
+
+
+#### Use with CLI - Models
+<todo: model deployment using CLI>
+
+#### Use in AzureML Studio - Jobs in Designer 
+
+Open the Designer in AzureML Studio with flight=registryAsset appended to the url. 
+
+You can then filter assets from a specific Registry and then drag and drop them to the Designer canvas to submit jobs.
+
+![Registry in Designer](./images/registry-designer.gif)
+
+#### Use in AzureML Studio - Models 
+
+<todo: model deployment>
+
+#### Use in Python SDK 
+<todo: jobs and models in Python SDK>
+
 
 ### I get the concepts, show me more examples...
 
@@ -222,6 +264,7 @@ You must be able to verify that the child jobs in the pipeline are using compone
 
 ### Coming soon...
 * Update to this doc to show how to create and use Models from Registry
+* Python SDK support for assets from Registry
 * Curated environment support
 * MLflow model support
 * Batch Endpoint support
