@@ -18,7 +18,7 @@ registry-properties.json
 
 ### Step 1
 
-Edit the following in `create-registry.sh` (located )
+Edit the following in `create-registry.sh` 
 
 ```
 rg_name="<resource group placeholder>"

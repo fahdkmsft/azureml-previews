@@ -59,6 +59,14 @@ For Registry specific RBAC permissions, see https://docs.microsoft.com/en-us/azu
 
 Step 1: Setup your CLI V2 environment as explained here: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli?tabs=public (az cli, az ml cli, create and set default workspace, etc.)
 
+Make sure you have set your Azure subscription and defaults for location, resource group and workspace for the Az cli
+
+```
+az account set -s <subscription_id> 
+az configure --defaults group=<RG> workspace=<WORKSPACE> location=<LOCATION>
+```
+
+
 Step 2: Uninstall the V2 CLI (you will install private version in next step)
 
 ```
