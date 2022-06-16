@@ -6,7 +6,7 @@ Pre-requsites
 
 * Install Azure CLI
 * Login to Azure CLI
-*mYou need to be owner of the Resource Group in which you are creating the Registry. This is possible in two ways: i) You are the owner the subscription which means you are an inherited owner of the Resource Group you will create in the steps below. ii) You ask someone who has the permissions to make you owner of a Resource Group that you use to create the Registry 
+* You need to be owner of the Resource Group in which you are creating the Registry. This is possible in two ways: i) You are the owner the subscription which means you are an inherited owner of the Resource Group you will create in the steps below. ii) You ask someone who has the permissions to make you owner of a Resource Group that you use to create the Registry 
 
 
 ### Step 0
