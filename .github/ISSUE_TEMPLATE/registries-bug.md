@@ -15,6 +15,7 @@ Category (select at least one):
 [   ] CLI - asset use/job submission
 [   ] Designer 
 
+CLI version (paste output of  "az version" command)
 
 Brief description of the task you are trying to accomplish (e.g. create a registry, create component in registry, submit job using component in registry, etc.):
 
