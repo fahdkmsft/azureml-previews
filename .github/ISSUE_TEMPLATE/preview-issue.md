@@ -2,8 +2,9 @@
 name: Report an issue with a preview feature
 about: Having an issue with one of the preview features?
 title: ''
-labels: 'preview issue'
-assignees: ''
+labels: ''
+assignees: ManojBableshwar
+
 ---
 
 ## Which preview? Describe the issue
