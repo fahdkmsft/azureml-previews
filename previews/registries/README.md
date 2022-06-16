@@ -3,9 +3,43 @@
 ### What are AzureML Registries?  
 
 Registries are org wide repositories of ML assets such as Models, Environments, Components and more. Registries enable seamless MLOps across different IT environments such as dev, test and prod. Using Registries, Ops professionals can promote a ML model from the dev environment in which Data Scientists trained the model, to test environments in which, let’s say AB testing is done, and finally to production environment, while tracking linage across the ML lifecycle. Real-world ML models are complex and come with scaffolding code to run them. For example, a batch inference scenario that needs a ML model to score on, conda environments and custom docker image for the dependencies, and a pipeline of ML tasks to pre-process the data before scoring. Registries let you package all these – the models, pipelines, and environments – into a cohesive collection and deploy across many AzureML Workspaces in different Azure subscriptions in your organization. 
+
 Data science teams get started with Machine Learning on Azure by creating a AzureML Workspace. Workspace offers a central location to organize and track ML activates - experiments, compute, datasets, models, endpoints, environments and more. A workspace is typically used by one or few teams and is associated with an Azure subscription. From an operations standpoint, keeping security, compliance and cost management in mind, customers typically isolate dev environments and prod environments in different Azure subscriptions, with corresponding AzureML workspaces. Today, you cannot deploy a model registered in one workspace into a different workspace or use pipelines published to one workspace in a different one. This makes MLOps hard and fragile because ML assets created by data science teams in dev workspaces in dev subscriptions must be manually copied over to prod workspaces in prod subscriptions. Sure, you can automate the copy tasks using a DevOps systems but more importantly, you lose lineage and traceability when you move assets across workspaces today – What dataset was used to train a model? Which was the experiment and what were the metrics to show this model was a good candidate? Where do I go to retrain this production model because I see that the performance is degrading? 
+
 Registries, much like a Git repository, decouples ML assets from workspaces and hosts them in a central location, making them available to all workspaces in your organization. You start by iterating within a workspace and when you have a good candidate asset, you can publish it to a Registry in the say way you would register a model or a pipeline with a workspace. Meaning, you use the same `az ml` cli commands to publish assets to either a workspace or a Registry. You can even promote an asset already registered in a workspace to a Registry. Just like assets in a workspace are versioned, assets in Registries support versioning too. This means a model in a Registry can have different versions with a newer version deployed for AB testing to an endpoint in a test workspace while an older and stable continues to be deployed to an endpoint in the production workspace. With online endpoints v2, even after you deploy a new version to production, you can gradually shift traffic from the older to the newer version, keeping a margin of safety. Across this entire flow, the Models UI in Registries will visualize the complete lifecycle of this model – the dataset used to train the model, the job that trained the model with metrics, the various dev, test and prod endpoints to which the model is deployed across different workspaces. 
 Registries not only enable better MLOps, but also foster great collaboration with your organization. The Registries UI in AzureML Studio offers gallery to discover all ML assets in your organization. It aggregates assets across multiple org level Registries and smartly curates content such as the most popular assets, most used assets, assets featured by the admins and more, opening up creative collaboration opportunities: Has someone already built a utility component to extract and featurize data from the inventory database? Has someone already downloaded and tokenized Enron Email dataset in our org? Is there a component that warps the latest release of TenserFlow 2.0 and are the any jobs to show how this works? In addition to sharing assets within the enterprise, Registries also enables a framework for public sharing of AzureML compatible ML assets. To begin with, Microsoft will publish a set of valuable utilities and popular per-trained models that will be made available to all AzureML users. In future, we will enable our partners and customers to share assets publicly outside their organization. 
+
+To summarize,
+
+* Registry is a collection of AzureML Assets that can be used by one or more Workspaces.
+* Registries facilitate sharing of assets among teams working across multiple Workspaces in an organization.
+Registries, by virtue of sharing assets, enable MLOps flow of assets across dev -> test -> prod environments.
+* Registries can make Workspaces more project centric by decoupling iterative assets in Workspaces and final/prod ready assets in Registries.
+* Assets in Registries can be used by Workspaces in any region (specified while creating the a Registry), with the service transparently replicating necessary resources (code snapshots, docker images) in the background.
+
+### Registry Concepts
+
+#### ARM Representation  
+
+AzureML Registries are Azure Resources that can be managed using Azure Resource Manager (ARM), under the `Microsoft.MachineLearningServices` resource provider. This implies:
+* A Registry is placed under a Azure Resource Group
+* A Registry is associated with a Azure Subscription that is used to bill resources consumed by the Registry
+* In addition to the `microsoft.machinelearningservices/registries` core resource type, creating a Registry creates additional Azure resources such as storage accounts and Azure Container Registries.
+
+#### Replication
+Registries are supposed to enable org wide (tenant level) sharing of assets. As such, users can create jobs and endpoints using Registry assets in workspaces if different Azure regions. A Registry can replicate assets to multiple regions ensuring that Workspaces in different regions have low latency access to assets content (code, binaries, docker images, etc.) The regions to which a Registry replicates assets is defined when the Registry is created and can also be updated at a later point. Using assets from a Registry in a Workspace that is in a Region to which the Registry has not been configured to replicate assets will result in an error. 
+
+#### Access control 
+Registry permissions will be governed by RBAC, allowing teams to have flexibility between highly curated (tight permissions) vs everyone can contribute (lose permissions). 
+* Write access that allows users to create assets in Registry and Manage access that allows users to edit Registry properties is always configured through RBAC.
+* Read access allows users to create jobs and endpoints in Workspaces that use assets from a Registry can either be set to i) Tenant level access - all users in a tenant can access the Registry ii) RBAC level access - users granted access to RBAC will be able to use assets from the Registry. 
+
+Currently, a Workspace does not need any permission grant or configuration to use assets from a Registry as long as the user submitting the job as permissions to read assets from the Registry. We may revisit this in future if we discover a need for users to lock down a Workspace and prevent it from using assets outside the Workspace.
+
+For Registry specific RBAC permissions, see https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations#microsoftmachinelearningservices. 
+
+![Registry RBAC](./images/rbac-permissions.png)
+
 
 ### Preview Pre-requisites
 

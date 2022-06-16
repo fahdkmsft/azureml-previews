@@ -28,7 +28,16 @@ Edit the following in `registry-properties.json`
 
 ### Step 3
 
-Run `bash create-registry.sh`. Below shows sample output. This script works on Linux, but you can run the two commands on Windows too... 
+Run `bash create-registry.sh`. Below shows sample output. This script works on Linux, but you can run the two commands on Windows too. Sample output of the commands is shown at the end of this page. 
+
+Below is a screenshot of the RG in which the Registry is created. You can see the following:
+* Orange arrow: Registry resource (you need to enable hidden types to see this, see green oval)
+* Blue arrows: ACR with replication to 2 regions
+* Red arrows: 2 storage accounts, one for each region
+
+
+![Registry in Azure Portal](../images/registry-azure-portal.png)
+
 
 
 ```
