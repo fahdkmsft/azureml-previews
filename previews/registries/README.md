@@ -3,7 +3,7 @@
 ### Welcome
 
 * Request access to Registries preview: https://forms.office.com/r/VrX6rE2Ut0
-* Template to report bugs, issues, feature requests: https://github.com/Azure/azureml-previews/issues/new?assignees=ManojBableshwar&labels=registries&template=registries-bug.md&title=Registries+bug%3A+ 
+* Template to report bugs, issues, feature requests: https://github.com/Azure/azureml-previews/issues/new?assignees=ManojBableshwar&labels=registries&template=registries-bug.md&title=Registries+bug%3A+  (GitHub issues (not emails) are the preferred means of reporting issues, getting support, and sharing feedback.)
 
 
 ### What are AzureML Registries?  
