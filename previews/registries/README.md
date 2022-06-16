@@ -1,5 +1,11 @@
 
 
+### Welcome
+
+* Request access to Registries preview: <todo>
+* Template to report bugs, issues, feature requests: https://github.com/Azure/azureml-previews/issues/new?assignees=ManojBableshwar&labels=registries&template=registries-bug.md&title=Registries+bug%3A+ 
+
+
 ### What are AzureML Registries?  
 
 Registries are org wide repositories of ML assets such as Models, Environments, Components and more. Registries enable seamless MLOps across different IT environments such as dev, test and prod. Using Registries, Ops professionals can promote a ML model from the dev environment in which Data Scientists trained the model, to test environments in which, let’s say AB testing is done, and finally to production environment, while tracking linage across the ML lifecycle. Real-world ML models are complex and come with scaffolding code to run them. For example, a batch inference scenario that needs a ML model to score on, conda environments and custom docker image for the dependencies, and a pipeline of ML tasks to pre-process the data before scoring. Registries let you package all these – the models, pipelines, and environments – into a cohesive collection and deploy across many AzureML Workspaces in different Azure subscriptions in your organization. 
@@ -62,12 +68,18 @@ az extension remove -n ml
 Step 3: Install the private CLI as shown below (or the specific private version that was shared with you)
 
 ```
-az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/64774736/ml-0.0.64774736-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/64774736 --yes 
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/65104501/ml-0.0.65104501-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/65104501 --yes
 ```
 
 Step 4: Enable Private Preview Features
+  
+Linux
 ```
 export AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
+```
+Windows
+```
+set AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true
 ```
 
 
@@ -110,7 +122,6 @@ az ml component create --file component.yml --registry-name <registry_name_place
 
 ### How to view assets created in Registries? 
 
-
 #### View with CLI
 
 You can list assets using the CLI
@@ -118,7 +129,6 @@ You can list assets using the CLI
 ```
 az ml <asset_type> list --registry-name <registry_name_placeholder>
 ```
-
 
 You can show a specific asset using the CLI
 
@@ -133,9 +143,6 @@ The Registries UI hub is located in the AzureML global homepage: ml.azure.com/ho
 ![Registry hub](./images/registry-hub.png)
 
 ### How to use assets from a Registry?
-
-
-#### Use with CLI - Jobs
 
 You use assets from Registries in Jobs and Endpoints created in Workspaces. To do so, the asset name needs a Registry scope qualifier, hence the name of assets living in Workspaces looks like this: 
 
@@ -165,7 +172,6 @@ az ml job create --file pipeline.yml
 
 ![Sample job using Component from Registry](./images/sample-job.png)
 
-
 #### Use with CLI - Models
 <todo: model deployment using CLI>
 
@@ -183,7 +189,6 @@ You can then filter assets from a specific Registry and then drag and drop them 
 
 #### Use in Python SDK 
 <todo: jobs and models in Python SDK>
-
 
 ### I get the concepts, show me more examples...
 
@@ -268,6 +273,15 @@ You must be able to verify that the child jobs in the pipeline are using compone
 * Curated environment support
 * MLflow model support
 * Batch Endpoint support
+
+
+### Appendix
+
+Old preview bits
+
+```
+az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/azureml-v2-cli-e2e-test/64774736/ml-0.0.64774736-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/azureml-v2-cli-e2e-test/64774736 --yes 
+```
 
 
 
