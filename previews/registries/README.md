@@ -107,7 +107,7 @@ Today
 * Models
 
 In future:
-* Datasets 
+* Data (MLTable and File Data) 
 
 ### How to create assets in a Registry? 
 
