@@ -115,9 +115,10 @@ You use the same `az ml <asset_type> create` commands available with AzureML CLI
 
 We will add support for Python SDK and UI in future. 
 
-#### Example - Command component + inline/local environment with public docker image
+#### Example - Command component 
+Start here to learn more about Components and Pipelines: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-create-component-pipelines-cli
 
-component.yml
+Create a file `component.yml` using the contents shown below
 
 ```yaml
 name: awesome_component
@@ -127,9 +128,56 @@ command: echo 'I live in Registry and run in Workspace'
 environment:
   image: docker.io/python
 ```
-
+Create the component
 ```
 az ml component create --file component.yml --registry-name <registry_name_placeholder>
+```
+
+#### Example - Environment  
+See this doc to learn more about AzureML Environments: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-environments-v2
+
+Create a conda definition file `conda.yml` using contents shown below
+```
+name: model-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - numpy=1.21.2
+  - pip=21.2.4
+  - scikit-learn=0.24.2
+  - scipy=1.7.1
+  - pip:
+    - azureml-defaults==1.38.0
+    - joblib==1.0.1
+```
+
+Create an environment definition file `env.yml` (refers the conda file created above) using the content shown below
+```
+name: sklearn_env
+version: 99
+conda_file: ./conda.yml
+image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
+```
+Create the environment
+
+```
+az ml environment create --file env.yml --registry-name <registry_name_placeholder>
+```
+#### Example - Model
+Learn more about working with Models in AzureML here: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-manage-models
+
+Make sure you have the model file available in the [model dir](./model/) directory in this repo.
+
+Create the model definition file `model.yml` using the content shown below
+```
+name: sklearn_model
+version: 99
+path: ./model
+```
+Create the model
+```
+az ml model create --file model.yml --registry-name <registry_name_placeholder>
 ```
 
 ### How to view assets created in Registries? 
@@ -137,13 +185,17 @@ az ml component create --file component.yml --registry-name <registry_name_place
 #### View with CLI
 
 You can list assets using the CLI
-
 ```
 az ml <asset_type> list --registry-name <registry_name_placeholder>
+# list components
+az ml component list --registry-name <registry_name_placeholder>
+# list environments
+az ml environment list --registry-name <registry_name_placeholder>
+# list models
+az ml model list --registry-name <registry_name_placeholder>
 ```
 
 You can show a specific asset using the CLI
-
 ```
 az ml <asset_type> show --name <asset_name> --version <asset_version> --registry-name <registry_name_placeholder>
 ```
@@ -166,9 +218,10 @@ You can find the fully formed name string on the asset details page in the UI
 
 ![Component detail page](./images/component-detail.png)
 
-#### Example - simple pipeline job that uses the Command Component created above
+#### Example - Jobs using CLI - Pipeline job that uses the Command Component created above
+Start here to learn about Jobs in AzureML: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli
 
-pipeline.yml
+Create the pipeline job definition `pipeline.yml` using the content shown below
 ```yaml
 type: pipeline
 jobs:
@@ -177,17 +230,17 @@ jobs:
     component: azureml://registries/<registry_name>/components/awesome_component/versions/101
     compute: azureml:cpu-cluster
 ```
-
+Submit the pipeline job
 ```
 az ml job create --file pipeline.yml
 ```
 
 ![Sample job using Component from Registry](./images/sample-job.png)
 
-#### Use with CLI - Models
-<todo: model deployment using CLI>
+#### Example - Jobs using Python SDK 
+<todo: jobs with Python SDK>
 
-#### Use in AzureML Studio - Jobs in Designer 
+#### Example - Jobs using drag-n-drop Designer UI in AzureML Studio 
 
 Open the Designer in AzureML Studio with flight=registryAsset appended to the url. 
 
@@ -195,14 +248,43 @@ You can then filter assets from a specific Registry and then drag and drop them 
 
 ![Registry in Designer](./images/registry-designer.gif)
 
-#### Use in AzureML Studio - Models 
 
-<todo: model deployment>
+#### Example - Deploy a Model to Online Endpoint and submit a scoring request
+If you don't know what are managed online endpoints, start here: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints
 
-#### Use in Python SDK 
-<todo: jobs and models in Python SDK>
+Create a online endpoint (we suffix a random number to avoid name clash. This works only on linux. Replace with a random number in Windows)
+```
+ep_name=testep$RANDOM
+az ml online-endpoint create --name $ep_name
+```
+Create the online deployment definition `deploy.yml` referencing the `model` and `environment` created above. Make sure you have the `score.py` in the `score` directory available in the [score](./score/) directory in this repo. Remember to replace `<registry_name>` with the name of your Registry.
+```
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+model: azureml://registries/<registry_name>/models/sklearn_model/versions/99
+code_configuration:
+  code: ./score
+  scoring_script: score.py
+environment: azureml://registries/<registry_name>/environments/sklearn_env/versions/99
+instance_type: Standard_DS2_v2
+instance_count: 1
+```
+Deploy the model (you will need the endpoint name created above)
+```
+az ml online-deployment create --file deploy.yml --endpoint-name  $ep_name --all-traffic
+```
 
-### I get the concepts, show me more examples...
+Create a scoring request (you will need the name of the endpoint saved in the `ep_name` variable)
+```
+ENDPOINT_KEY=$(az ml online-endpoint get-credentials -n $ep_name -o tsv --query primaryKey)
+SCORING_URI=$(az ml online-endpoint show -n $ep_name -o tsv --query scoring_uri)
+curl --request POST "$SCORING_URI" --header "Authorization: Bearer $ENDPOINT_KEY" --header 'Content-Type: application/json' --data @./request/sample-request.json
+```
+#### Example - Deploy Models using AzureML Studio UI 
+
+<todo: model deployment using UI>
+
+### I get the concepts, show me and end-to-end sample...
 
 You can try the samples in AzureML examples repo: https://github.com/Azure/azureml-examples.git
 
