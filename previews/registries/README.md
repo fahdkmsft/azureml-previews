@@ -227,7 +227,7 @@ type: pipeline
 jobs:
   awesome_job:
     type: command
-    component: azureml://registries/<registry_name>/components/awesome_component/versions/101
+    component: azureml://registries/<registry_name_placeholder>/components/awesome_component/versions/101
     compute: azureml:cpu-cluster
 ```
 Submit the pipeline job
@@ -257,15 +257,15 @@ Create a online endpoint (we suffix a random number to avoid name clash. This wo
 ep_name=testep$RANDOM
 az ml online-endpoint create --name $ep_name
 ```
-Create the online deployment definition `deploy.yml` referencing the `model` and `environment` created above. Make sure you have the `score.py` in the `score` directory available in the [score](./score/) directory in this repo. Remember to replace `<registry_name>` with the name of your Registry.
+Create the online deployment definition `deploy.yml` referencing the `model` and `environment` created above. Make sure you have the `score.py` in the `score` directory available in the [score](./score/) directory in this repo. Remember to replace `<registry_name_placeholder>` with the name of your Registry.
 ```
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
-model: azureml://registries/<registry_name>/models/sklearn_model/versions/99
+model: azureml://registries/<registry_name_placeholder>/models/sklearn_model/versions/99
 code_configuration:
   code: ./score
   scoring_script: score.py
-environment: azureml://registries/<registry_name>/environments/sklearn_env/versions/99
+environment: azureml://registries/<registry_name_placeholder>/environments/sklearn_env/versions/99
 instance_type: Standard_DS2_v2
 instance_count: 1
 ```
