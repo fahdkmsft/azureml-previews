@@ -56,7 +56,30 @@ For Registry specific RBAC permissions, see https://docs.microsoft.com/en-us/azu
 
 ### Preview Pre-requisites
 
+There are couple of ways to experience the CLI. Below are the options. We would recommend Option A over Option B, as A is cleaner setup in an isolated docker supported by codespaces. Option B could cause issues depending on the clealiness of you local machine, e.g. conda environments could be corrupted, python could be broken, dangling package version etc. This could cause issues to be logged which are not actual issues related to the features. And you could spend hours to fix your local environment.
 
+
+#### Option A:
+
+* Go to : https://github.com/Azure/azureml-examples/tree/banide/bugbash
+
+* Create a codespaces on the branch, this will pull the right docker image with right version of pre-release CLI that will be used for bugbash
+
+![Create a codespace using right branch](./images/codespaces.png)
+
+* It takes about a minute to get the docker running and have the Vscode launched in the browser.
+![Codespace starts up](./images/codespaces_setup.png)
+
+
+* Once it is launced go to the terminal and setup the az login by running az login --use-device-code
+
+![VScode running with the terminal](./images/codespaces-terminal.png)
+
+
+You are all set!!! CLI is installed, Private_features are setup. Make sure you do "az login --use-device-code", and setup the right subscription and resource groups to play with the CLI
+
+
+#### Option B:
 Step 1: Setup your CLI V2 environment as explained here: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli?tabs=public (az cli, az ml cli, create and set default workspace, etc.)
 
 Make sure you have set your Azure subscription and defaults for location, resource group and workspace for the Az cli
