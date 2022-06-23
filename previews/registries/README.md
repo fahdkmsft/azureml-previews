@@ -44,7 +44,15 @@ Currently, a Workspace does not need any permission grant or configuration to us
 
 For Registry specific RBAC permissions, see https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations#microsoftmachinelearningservices. 
 
-![Registry RBAC](./images/rbac-permissions.png)
+Action | Description
+--|--
+Microsoft.MachineLearningServices/registries/read	| Gets the Machine Learning Services Registry(ies)
+Microsoft.MachineLearningServices/registries/write |	Creates or updates the Machine Learning Services Registry(ies)
+Microsoft.MachineLearningServices/registries/delete	| Deletes the Machine Learning Services Registry(ies)
+Microsoft.MachineLearningServices/registries/assets/read |	Reads assets in Machine Learning Services Registry(ies)
+Microsoft.MachineLearningServices/registries/assets/write	| Creates or updates assets in Machine Learning Services Registry(ies)
+Microsoft.MachineLearningServices/registries/assets/delete |	Deletes assets in Machine Learning Services Registry(ies)
+Microsoft.MachineLearningServices/registries/checkNameAvailability/read	| Checks name for Machine Learning Services Registry(ies)
 
 
 #### Comparision to Workspace
