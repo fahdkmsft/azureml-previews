@@ -8,6 +8,11 @@
 
 ### What are AzureML Registries?  
 
+
+![](./images/registry-concept.png)
+
+
+
 Registries are org wide repositories of ML assets such as Models, Environments, Components and more. Registries enable seamless MLOps across different IT environments such as dev, test and prod. Using Registries, Ops professionals can promote a ML model from the dev environment in which Data Scientists trained the model, to test environments in which, let’s say AB testing is done, and finally to production environment, while tracking linage across the ML lifecycle. Real-world ML models are complex and come with scaffolding code to run them. For example, a batch inference scenario that needs a ML model to score on, conda environments and custom docker image for the dependencies, and a pipeline of ML tasks to pre-process the data before scoring. Registries let you package all these – the models, pipelines, and environments – into a cohesive collection and deploy across many AzureML Workspaces in different Azure subscriptions in your organization. 
 
 Data science teams get started with Machine Learning on Azure by creating a AzureML Workspace. Workspace offers a central location to organize and track ML activates - experiments, compute, datasets, models, endpoints, environments and more. A workspace is typically used by one or few teams and is associated with an Azure subscription. From an operations standpoint, keeping security, compliance and cost management in mind, customers typically isolate dev environments and prod environments in different Azure subscriptions, with corresponding AzureML workspaces. Today, you cannot deploy a model registered in one workspace into a different workspace or use pipelines published to one workspace in a different one. This makes MLOps hard and fragile because ML assets created by data science teams in dev workspaces in dev subscriptions must be manually copied over to prod workspaces in prod subscriptions. Sure, you can automate the copy tasks using a DevOps systems but more importantly, you lose lineage and traceability when you move assets across workspaces today – What dataset was used to train a model? Which was the experiment and what were the metrics to show this model was a good candidate? Where do I go to retrain this production model because I see that the performance is degrading? 
@@ -22,6 +27,9 @@ To summarize,
 Registries, by virtue of sharing assets, enable MLOps flow of assets across dev -> test -> prod environments.
 * Registries can make Workspaces more project centric by decoupling iterative assets in Workspaces and final/prod ready assets in Registries.
 * Assets in Registries can be used by Workspaces in any region (specified while creating the a Registry), with the service transparently replicating necessary resources (code snapshots, docker images) in the background.
+
+
+![](./images/registry-dev-test-prod.png)
 
 ### Registry Concepts
 
