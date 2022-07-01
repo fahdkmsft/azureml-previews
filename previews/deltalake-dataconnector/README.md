@@ -39,13 +39,14 @@ Install the AzureML SDK versions that is compatible with the Delta Lake by r
 ```
 !pip uninstall --yes azureml-dataprep azureml-dataprep-native azureml-dataprep-rslex azureml-core 
 
-!pip install azureml-dataprep[pandas] --index https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/46761121/ --no-deps 
+!pip install azureml-dataprep[pandas] --index https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/65254875/ --no-deps
+ 
+!pip install azureml-dataprep-rslex --index https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/65254875/ --no-deps
+ 
+!pip install azureml-dataprep-native --index https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/65254875/ --no-deps
+ 
+!pip install azureml-core --index https://azuremlsdktestpypi.azureedge.net/Create-Dev-Index/65260153/ --no-deps
 
-!pip install azureml-dataprep-rslex --index https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/46761121/ --no-deps 
-
-!pip install azureml-dataprep-native --index https://dataprepdownloads.azureedge.net/pypi/test-M3ME5B1GMEM3SW0W/46761121/ --no-deps 
-
-!pip install azureml-core --index https://azuremlsdktestpypi.azureedge.net/Create-Dev-Index/51809517/ --no-deps
 
 !pip show azureml-dataprep azureml-dataprep-rslex azureml-dataprep-native azureml-core 
 ```
