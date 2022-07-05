@@ -1,29 +1,21 @@
 ## Overview
-ML model training usually requires lots of experimentation and iterations. With the new AzureML interactive job experience, data scientists can now use 2.0 CLI or the studio portal to quickly check out their required compute resources with custom environment, login to the compute target via JupyterNotebook, JupyterLab, VSCode, TensorBoard and custom endpoints to run training scripts, monitor the training progress or debug & troubleshoot the model like they usually do on their local machines, while keeping the operation cost optimized for resource allocation and utilization as a team.
+ML model training usually requires lots of experimentation and iterations. With the new Azure ML interactive job experience, data scientists can now use CLI v2 or Azure ML Studio Portal to quickly check out their required compute resources with custom environment, login to the compute via JupyterNotebook, JupyterLab, TensorBoard, or VS Code to iterate on training scripts, monitor the training progress or debug the job remotely like they usually do on their local machines, while keeping the operation cost optimized for resource allocation and utilization as a team.
 
-Interactive job is supported on **AMLArc Compute** and will be available on AML Compute and Compute Instance in later releases.
+Interactive job is supported on **Azure ML Compute Cluster** and **Azure Arc-enabled Kubernetes Cluster**  and will be available on Compute Instance in later release.
 
 ## Prerequisites
-- Complete the **Prerequisites** and **Getting started** in [this document](https://github.com/Azure/AML-Kubernetes)
-- When you deploy AzureML extension to your Azure Arc enabled Kubernetes cluster (`az k8s-extension create`), make sure you append the configurations to turn on interactive job.
-    - `enableInteractiveJob=True`: Default to `False`. Set it to `True` to enable interactiveJob capability. 
-    - `interactiveJob.enableInteractiveProxy=True`:  Default to `False`. Set it to `True` if your Kubernetes cluster has public network inbound.
-    - `interactiveJob.interactiveProxyPort=4443`: Default to `4443`. In normal case, user doesn’t need to change the default value. This config is bound with `interactiveJob.enableInteractiveProxy`.
-    - (If you are on Kubernetes onprem) `interactiveJob.entryPointMachineForEndpoint`: If the Kubernetes cluster doesn’t have a load balancer with public IP, give any node IP in the cluster to use nodePort. 
-
-**Note:** The 2 steps above are usually done by your admin.
-- (Optional) [an AzureML dataset is created](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-connect-data-ui) if your input data is downloaded in Azure blob. You can skip this step if you will download data after you log in to the interactive job.
+- To use the CLI (v2), you must have an Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/) today.
+- [Install and set up CLI (v2)](how-to-configure-cli.md).
 
 ## Get started
-### Submit an interactive job via AzureML 2.0 CLI
-1. [Install, set up and get familiar with the 2.0 CLI](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
-1. Create a job yaml `job.yaml` with below content. Make sure to replace `your job name` and `your attached amlarc compute name` with your own values. If you want to use custom environment, follow the examples in [this tutorial](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli). 
+### Submit an interactive job via CLI v2
+1. Create a job yaml `job.yaml` with below content. Make sure to replace `your job name` and `your compute name` with your own values. If you want to use custom environment, follow the examples in [this tutorial](https://docs.microsoft.com/azure/machine-learning/how-to-manage-environments-v2). 
 ```dotnetcli
-name: <your job name> #job name needs to be updated every time you submit it
-command: sleep infinity # you can add other commands before "sleep infinity" but make sure "sleep infinity" is put at the end so that the resource is reserved.
+name: <your job name> 
+command: sleep infinity # you can add other commands before "sleep infinity" but make sure "sleep infinity" is put at the end so that the compute resource is reserved after the script finishes running.
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 compute:
-  target: azureml:<your attached amlarc compute name>
+  target: azureml:<your compute name>
 services:
   "my_jupyter":
     job_service_type: "Jupyter" # Jupyter Notebook
@@ -44,7 +36,7 @@ You can also put `sleep <specific time>` at the end of the command to speicify t
  
  Note that if you put `sleep infinity`, you will need to cancel the job after you finish the work. We are working on an auto termination policy for this scenario. 
  
-3. Run command `az ml job create --workspace-name <your workspace name> --resource-group <your resource group name> --subscription <sub-id> --file <path to your job yaml file> `
+2. Run command `az ml job create --workspace-name <your workspace name> --resource-group <your resource group name> --subscription <sub-id> --file <path to your job yaml file> `
 
 ### Submit an interactive job via AzureML studio portal
 1. Create a new job from the left navigation pane or homepage of the studio portal (**turn on flight** by appending `&flight=InteractiveJob` to the end of the URL).
