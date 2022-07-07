@@ -25,8 +25,6 @@ services:
       logDir: "~/tblog" # where you want to store the TensorBoard output 
   "my_jupyterlab":
     job_service_type: "JupyterLab"
-  "my_vscode":
-    job_service_type: "vscode"
 ```
 You can also put `sleep <specific time>` at the end of the command to speicify the amount of time you want to reserve the compute resource. The format follows: 
 * sleep 1s
