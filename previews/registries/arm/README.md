@@ -429,4 +429,4 @@ Additionally change the `create-registry.sh` file to refer to AzureMLManagedRegi
 
 Run `bash create-registry.sh`. Below shows sample output. This script works on Linux, but you can run the two commands on Windows too. Sample output of the commands is shown at the end of this page.
 
-Once the registry is created, you will notice that a new Resource Group has been created in your subscription. This Resource Group was created by AML and it will contain storage and ACR accounts for each region that the registry belongs to. The Resource Group will be names using the format azureml-rg-`<RegistryName>`_`<Guid>`. For example, azureml-rg-contosoMLjun14_17953b2b-a851-42b0-88ec-95fa8bf679be.
+Once the registry is created, you will notice that a new Resource Group has been created in your subscription. This Resource Group was created by AML and it will contain storage and ACR accounts for each region that the registry belongs to. The Resource Group will be named using the format azureml-rg-`<RegistryName>`_`<Guid>`. For example, azureml-rg-contosoMLjun14_17953b2b-a851-42b0-88ec-95fa8bf679be.
