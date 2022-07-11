@@ -5,88 +5,89 @@ param storageLocations array
 
 var constPrefix = 'mlreg'
 
-var uniqueRegistryName = substring(uniqueString(registryName), 8)
+// this is used to decide storage and acr names, so toLowering registryName
+var uniqueRegistryName = substring(uniqueString(toLower(registryName)), 8)
 
 var regionShortNameMapping = {
-  WestUS2: {
+  westus2: {
     shortName: 'wus2'
   }
-  EastUS2: {
+  eastus2: {
     shortName: 'eus2'
   }
-  SouthCentralUS: {
+  southcentralus: {
     shortName: 'scus'
   }
-  WestEurope: {
+  westeurope: {
     shortName: 'weu'
   }
-  EastUS: {
+  eastus: {
     shortName: 'eus'
   }
-  NorthEurope: {
+  northeurope: {
     shortName: 'neu'
   }
-  WestCentralUS:{
+  westcentralus:{
     shortName: 'wcus'
   }
-  CentralUS: {
+  centralus: {
     shortName: 'cus'
   }
-  EastAsia: {
+  eastasia: {
     shortName: 'eas'
   }
-  SouthEastAsia: {
+  southeastasia: {
     shortName: 'sea'
   }
-  WestUS: {
+  westus: {
     shortName: 'wus'
   }
-  EastUS2EUAP: {
+  eastus2euap: {
     shortName: 'eus2e'
   }
-  CentralUSEUAP: {
+  centraluseuap: {
     shortName: 'cseuap'
   }
-  SouthAfricaNorth: {
+  southafricanorth: {
     shortName: 'sano'
   }
-  BrazilSouth: {
+  brazilsouth: {
     shortName: 'brs'
   }
-  CanadaCentral: {
+  canadacentral: {
     shortName: 'cac'
   }
-  WestUS3: {
+  westus3: {
     shortName: 'wus3'
   }
-  NorthCentralUS: {
+  northcentralus: {
     shortName: 'ncus'
   }
-  FranceCentral: {
+  francecentral: {
     shortName: 'frc'
   }
-  GermanyWestCentral: {
+  germanywestcentral: {
     shortName: 'gwc'
   }
-  SwitzerlandNorth: {
+  switzerlandnorth: {
     shortName: 'swn'
   }
-  UKSouth: {
+  uksouth: {
     shortName: 'uks'
   }
-  JapanWest: {
+  japanwest: {
     shortName: 'jpw'
   }
-  JapanEast: {
+  japaneast: {
     shortName: 'jpe'
   }
-  AustraliaEast: {
+  australiaeast: {
     shortName: 'aue'
   }
-  UAENorth: {
+  uaenorth: {
     shortName: 'uaen'
   }
-  CentralIndia: {
+  centralindia: {
     shortName: 'cind'
   }
 }
@@ -104,7 +105,7 @@ var roles = {
 // TODO: Iterative role assignment doesn't work with module. It is an experimental feature now. So we can enable it later.
 // So, for now we put the whole storage bicep here.
 resource storageResources 'Microsoft.Storage/storageAccounts@2021-04-01' = [for storageLocation in storageLocations: {
-  name: '${constPrefix}${uniqueRegistryName}${regionShortNameMapping[split(storageLocation, '-')[0]].shortName}${split(storageLocation, '-')[1]}'
+  name: '${constPrefix}${uniqueRegistryName}${regionShortNameMapping[toLower(split(storageLocation, '-')[0])].shortName}${split(storageLocation, '-')[1]}'
   location: split(storageLocation, '-')[0]
   sku: {
     name: 'Standard_LRS'
