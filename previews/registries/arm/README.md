@@ -1,34 +1,37 @@
+# Create AzureML Registry in two different ways
 
+## Create AzureML Registry by first creating the underlying storage and ACR account
 
-## Create AzureML Registry using ARM teamplate
+### Create AzureML Registry using ARM template
 
 Pre-requsites
 
 * Install Azure CLI
 * Login to Azure CLI
-* You need to be owner of the Resource Group in which you are creating the Registry. This is possible in two ways: i) You are the owner the subscription which means you are an inherited owner of the Resource Group you will create in the steps below. ii) You ask someone who has the permissions to make you owner of a Resource Group that you use to create the Registry 
+* You need to be owner of the Resource Group in which you are creating the Registry. This is possible in two ways: i) You are the owner the subscription which means you are an inherited owner of the Resource Group you will create in the steps below. ii) You ask someone who has the permissions to make you owner of a Resource Group that you use to create the Registry
 
+#### Step 0
 
-### Step 0
-Clone this repo or make sure you have the following files that are located in [this directory](./): 
-```
+Clone this repo or make sure you have the following files that are located in [this directory](./):
+
+```bash
 AzureMLRegistry.bicep
 create-registry.sh
 registry-properties.json
 ```
 
-### Step 1
+#### Step 1
 
-Edit the following in `create-registry.sh` 
+Edit the following in `create-registry.sh`
 
-```
+```bash
 rg_name="<resource group placeholder>"
 location="<location placeholder>"
 az_sub="<azure subscription placeholder>"
 
 ```
 
-### Step 2
+#### Step 2
 
 Edit the following in `registry-properties.json`
 
@@ -36,21 +39,19 @@ Edit the following in `registry-properties.json`
 * `storageLocations` - this is the list of Azure Regions in which you have Workspaces in which you plan to use assets from this Registry (for storage accounts)
 * `acrReplicationLocations` - this is the list of Azure Regions in which you have Workspaces in which you plan to use assets from this Registry (for ACR replication)
 
-### Step 3
+#### Step 3
 
-Run `bash create-registry.sh`. Below shows sample output. This script works on Linux, but you can run the two commands on Windows too. Sample output of the commands is shown at the end of this page. 
+Run `bash create-registry.sh`. Below shows sample output. This script works on Linux, but you can run the two commands on Windows too. Sample output of the commands is shown at the end of this page.
 
 Below is a screenshot of the RG in which the Registry is created. You can see the following:
+
 * Orange arrow: Registry resource (you need to enable hidden types to see this, see green oval)
 * Blue arrows: ACR with replication to 2 regions
 * Red arrows: 2 storage accounts, one for each region
 
-
 ![Registry in Azure Portal](../images/registry-azure-portal.png)
 
-
-
-```
+```bash
 root@mabableslenovo:/mnt/c/CODE/REPOS/azureml-previews/previews/registries/arm 
 # bash create-registry.sh
 + rg_name=bug-bash-rg1
@@ -382,6 +383,50 @@ root@mabableslenovo:/mnt/c/CODE/REPOS/azureml-previews/previews/registries/arm
 }
 (base) root@mabableslenovo:/mnt/c/CODE/REPOS/azureml-previews/previews/registries/arm 
 # 
+```
 
+## Create AzureML Registry by allowing AML to create the underlying storage and ACR accounts
+
+### ARM template
+
+Pre-requsites
+
+* Install Azure CLI
+* Login to Azure CLI
+* You don't need to be Owner of the Resource Group in which you are creating the Registry. You just need to hav ethe permission to create a deployment in the Resource Group.
+
+#### Step 0
+
+Clone this repo or make sure you have the following files that are located in [this directory](./):
+
+```bash
+AzureMLManagedRegistry.bicep
+create-registry.sh
+managedregistry-properties.json
+```
+
+#### Step 1
+
+Edit the following in `create-registry.sh`
+
+```bash
+rg_name="<resource group placeholder>"
+location="<location placeholder>"
+az_sub="<azure subscription placeholder>"
 
 ```
+
+#### Step 2
+
+Edit the following in `managedregistry-properties.json`
+
+* `registryName` - name of the Registry
+* `registryLocations` - this is the list of Azure Regions in which you have Workspaces in which you plan to use assets from this Registry. The primary region of the registry will be the region where the customer's resource group resides in.
+
+Additionally change the `create-registry.sh` file to refer to AzureMLManagedRegistry.bicep instead of AzureMLRegistry.bicep and managedregistry-properties.json instead of registry-properties.json.
+
+#### Step 3
+
+Run `bash create-registry.sh`. Below shows sample output. This script works on Linux, but you can run the two commands on Windows too. Sample output of the commands is shown at the end of this page.
+
+Once the registry is created, you will notice that a new Resource Group has been created in your subscription. This Resource Group was created by AML and it will contain storage and ACR accounts for each region that the registry belongs to. The Resource Group will be names using the format azureml-rg-`<RegistryName>`_`<Guid>`. For example, azureml-rg-contosoMLjun14_17953b2b-a851-42b0-88ec-95fa8bf679be.
