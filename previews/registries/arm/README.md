@@ -1,6 +1,8 @@
 # Create AzureML Registry in two different ways
 
-## Create AzureML Registry by first creating the underlying storage and ACR account
+There two options to Create AzureML Registries - "Bring Your Own" and "Managed". When you use the Managed option, the AzureML service will create the required Azure resources such as storage accounts and ACR (Azure Container Registry). When you use the Bring Your Own option, you need to specify the required Azure resources such as storage accounts and ACR. For the sake of simplicity, the bicep included in this repo has some client side ARM automation which will create storage accounts and ACR for Bring Your Own option. We will expose options to specify your own storage accounts and ACR when we roll out the AzureML CLI commands.
+
+## Create storage account and ACR using ARM automation and then pass that information to create Registry
 
 ### Create AzureML Registry using ARM template
 
