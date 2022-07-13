@@ -1,7 +1,7 @@
 ## Overview
-ML model training usually requires lots of experimentation and iterations. With the new AzureML interactive job experience, data scientists can now use CLI v2 or AzureML Studio Portal to quickly check out their required compute resources with custom environment, login to the compute via JupyterNotebook, JupyterLab, TensorBoard, or VS Code (VS Code will be available in August) to iterate on training scripts, monitor the training progress or debug the job remotely like they usually do on their local machines, while keeping the operation cost optimized for resource allocation and utilization as a team.
+ML model training usually requires lots of experimentation and iterations. With the new AzureML interactive job experience, data scientists can now use CLI v2 or AzureML Studio Portal to quickly reserve their required compute resources with custom environment, access the job container via different training applications including **Jupyter, JupyterLab, TensorBoard, and VS Code** (VS Code will be available in August) to iterate on training scripts, monitor the training progress or debug the job remotely like they usually do on their local machines.
 
-Interactive job is supported on **AzureML Compute Cluster** and **Azure Arc-enabled Kubernetes Cluster**  and will be available on Compute Instance in later release.
+Interactive training is supported on **AzureML Compute Cluster** and **Azure Arc-enabled Kubernetes Cluster**  and will be available on Compute Instance in later release.
 
 ## Prerequisites
 - To use the CLI (v2), you must have an Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/) today.
