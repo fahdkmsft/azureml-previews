@@ -16,9 +16,9 @@ code: src
 command: 
   python train.py 
   sleep 1h # you can add other commands before "sleep 1h", the sleeping time can be put at the end so that the compute resource is reserved after the script finishes running.
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:41
 environment_variables: 
-  AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True' 
+  AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
 compute: azureml:<your compute name>
 services:
   "my_jupyter":
@@ -36,6 +36,7 @@ You can put `sleep <specific time>` at the end of the command to speicify the am
 * sleep 1m
 * sleep 1h
 * sleep 1d
+
 You can also put `sleep infinity`. Note that if you put `sleep infinity`, you will need to cancel the job after you finish the work. We will work on an auto termination policy for this scenario in later release. 
  
 2. Run command `az ml job create --file <path to your job yaml file> --workspace-name <your workspace name> --resource-group <your resource group name> --subscription <sub-id> `
