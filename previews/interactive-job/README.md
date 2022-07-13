@@ -19,8 +19,7 @@ command:
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:5
 environment_variables: 
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True' 
-compute:
-  target: azureml:<your compute name>
+compute: azureml:<your compute name>
 services:
   "my_jupyter":
     job_service_type: "Jupyter" # Jupyter Notebook
