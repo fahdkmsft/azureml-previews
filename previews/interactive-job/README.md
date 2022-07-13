@@ -63,15 +63,16 @@ When the job is **running**, Run the command `az ml job show <your job name>` to
 #### Connect via AzureML studio portal
 1. You can connect to the applications by clicking the button **Access training applications** in the job details page. 
 ![screenshot connect-to-apps](./media/accessbutton.png)
+
 Clicking the applications in the panel opens a new tab for the applications. Please note that you can access the applications only when the applications is in **Running** status and only the **job owner** is authorized to access the applications.
 ![screenshot apps-panel](./media/appspanel.png)
 
 ### Interact with the applications
-1. Open a terminal from Jupyter Notebook or Jupyter Lab and start interacting within the job container. You are landed on the home folder **/home/amluser**. **my_files** is a user level folder where you can keep your scripts and output data there. Next time when you submit a new job, this folder will be mounted to it as well.
-![screenshot my_files](./media/my_files.png)
-1. You can find the mounted data in `/tmp` folder.
-![screenshot open-terminal](./media/open-terminal.png) 
-1. If you run into any issues, the interactive capability and applications logs can be found from **system_logs->interactive_capability** under **Outputs + logs** tab.
+1. You are landed in the user container under your working directory, where you can access your code, inputs, outputs, and logs. You can open a terminal from Jupyter Notebook or Jupyter Lab and start interacting within the job container. You can also directly iterate your training script with Jupyter Notebook or Jupyter Lab. 
+![screenshot jupyter](./media/jupyter.png)
+![screenshot jupyterlab](./media/jupyterlab.png)
+1. If you have logged tensorflow events for your job, you can use TensorBoard to monitor the metrics when your job is running.
+1. If you run into any issues while connecting to the applications, the interactive capability and applications logs can be found from **system_logs->interactive_capability** under **Outputs + logs** tab.
 ![screenshot check-logs](./media/ijlogs.png)
 
 ### Release the compute resource
