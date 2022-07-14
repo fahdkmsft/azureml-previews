@@ -19,6 +19,7 @@ command:
 environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cuda11-gpu:41
 environment_variables: 
   AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'
+  AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True' 
 compute: azureml:<your compute name>
 services:
   "my_jupyter":
@@ -30,7 +31,7 @@ services:
   "my_jupyterlab":
     job_service_type: "JupyterLab"
 ```
-Please make sure to set the environment variable `AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'` in order to enable the interactive capability in preview. The `services` section specifies the training applications you want to interact with.  
+Please make sure to set the environment variable `AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'` and `AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'`in order to enable the interactive capability in preview. The `services` section specifies the training applications you want to interact with.  
 You can put `sleep <specific time>` at the end of the command to speicify the amount of time you want to reserve the compute resource. The format follows: 
 * sleep 1s
 * sleep 1m
