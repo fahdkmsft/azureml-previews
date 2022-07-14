@@ -1,7 +1,7 @@
 ## Overview
 ML model training usually requires lots of experimentation and iterations. With the new AzureML interactive job experience, data scientists can now use CLI v2 or AzureML Studio Portal to quickly reserve their required compute resources with custom environment, access the job container via different training applications including **Jupyter, JupyterLab, TensorBoard, and VS Code** (VS Code will be available in August) to iterate on training scripts, monitor the training progress or debug the job remotely like they usually do on their local machines.
 
-Interactive training is supported on **AzureML Compute Cluster** and **Azure Arc-enabled Kubernetes Cluster**  and will be available on Compute Instance in later release.
+Interactive training is supported on **AzureML Compute Cluster**, **Automatic Compute**, and **Azure Arc-enabled Kubernetes Cluster** and will be available on Compute Instance in later release.
 
 ## Prerequisites
 - To use the CLI (v2), you must have an Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/) today.
@@ -45,7 +45,7 @@ You can also put `sleep infinity`. Note that if you put `sleep infinity`, you wi
 ### Submit an interactive job via AzureML studio portal
 1. Create a new job from the left navigation pane in the studio portal.
 ![screenshot selct-job-ui](./media/selectjob.png)
-1. Choose `Compute cluster` or `Attached compute` (Kubernetes) as the compute type, choose the compute target, and specify how many nodes you need in `Instance count`. Note that for distributed job, you can only access the head node in the current release.
+1. Choose `Compute cluster`, `Automatic compute` or `Attached compute` (Kubernetes) as the compute type, choose the compute target, and specify how many nodes you need in `Instance count`. Note that for distributed job, you can only access the head node in the current release.
 ![screenshot select-compute-ui](./media/selectcompute.png)
 1. Follow the wizard to choose the environment you want to start the job.
 1. In `Job settings` step, add your training code (and input/output data) and reference it in your command to make sure it's mounted to your job. **You can end your command with `sleep <specific time>` to reserve the resource.** An example is like below:
