@@ -2,7 +2,7 @@
 
 ## ❗Important
 
-Preview docs for AzureML Registries has moved here: https://github.com/Azure/azureml-registries. Contact mabales@microsoft.com for access. 
+Preview docs for AzureML Registries has moved here: https://github.com/Azure/azureml-registries. Contact mabables@microsoft.com for access. 
 This page will no longer be maintained.
 
 ### Welcome
