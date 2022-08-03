@@ -4,76 +4,55 @@ import tempfile
 from azureml.core import Workspace
 from azureml.exceptions import WebserviceException
 from azureml._model_management._util import _get_mms_url
-from azureml._model_management._util import get_paginated_results
 from azureml._model_management._util import get_requests_session
 from azureml._model_management._constants import ACI_WEBSERVICE_TYPE, UNKNOWN_WEBSERVICE_TYPE
 from azureml._model_management._constants import MMS_SYNC_TIMEOUT_SECONDS
-from azureml.core.webservice import Webservice
+from azureml.core.webservice import Webservice, AciWebservice
 from azureml._restclient.clientbase import ClientBase
 
-MIGRATION_WEBSERVICE_TYPES = [ACI_WEBSERVICE_TYPE]
-
 def export(ws: Workspace,
-           compute_type: str = None,
+           service_name: str = None,
            timeout_seconds: int = None,
-           show_output: bool = True) -> (str, str):
+           show_output: bool = True):
     """
-    Export all services under target workspace into template and parameters,
-    valid compute_types is "ACI" for now.
+    Export all services under target workspace into template and parameters.
+    :param ws: Target workspace.
+    :param service_name: the service name to be migrated.
     :param show_output: Whether print outputs.
     :param timeout_seconds: Timeout settings for waiting export.
-    :param ws: Target workspace.
-    :param compute_type: Compute type to export.
     """
     base_url = _get_mms_url(ws)
-    mms_endpoint = base_url + '/services'
-    webservices = []
+    mms_endpoint = base_url + '/services/' + service_name
     headers = {'Content-Type': 'application/json'}
     headers.update(ws._auth_object.get_authentication_header())
-    params = None
-    if compute_type:
-        if compute_type.upper() not in MIGRATION_WEBSERVICE_TYPES:
-            raise WebserviceException('Invalid compute type "{}". Valid options are "{}"'
-                                      .format(compute_type, ",".join(MIGRATION_WEBSERVICE_TYPES)))
-        params = {'computeType': compute_type}
     try:
         resp = ClientBase._execute_func(get_requests_session().get, mms_endpoint, headers=headers,
-                                        params=params, timeout=MMS_SYNC_TIMEOUT_SECONDS)
+                                        timeout=MMS_SYNC_TIMEOUT_SECONDS)
     except:
-        raise WebserviceException(f'Cannot list WebServices ' +
-                                  (f'with type: {compute_type}' if compute_type else ''))
+        raise WebserviceException(f'Cannot get service {service_name}')
+
+    if resp.status_code == 404:
+        raise WebserviceException(f'Service {service_name} does not exist.')
+
     content = resp.content
     if isinstance(resp.content, bytes):
         content = resp.content.decode("utf-8")
-    services_payload = json.loads(content)
-    for service_dict in get_paginated_results(services_payload, headers):
-        service_type = service_dict['computeType']
-        child_class = None
-
-        for child in Webservice._all_subclasses(Webservice):
-            if service_type == child._webservice_type:
-                child_class = child
-                break
-            elif child._webservice_type == UNKNOWN_WEBSERVICE_TYPE:
-                child_class = child
-
-        if child_class:
-            service_obj = child_class.deserialize(ws, service_dict)
-            webservices.append(service_obj)
-    if len(webservices) == 0:
-        raise WebserviceException(f'No Webservices found in workspace ' +
-                                  (f'with type: {compute_type}' if compute_type else ''))
-    service_entity = webservices[0]
+    service = json.loads(content)
+    if service['state'] != 'Healthy':
+        raise WebserviceException(f'service {service_name} is unhealthy, migration is not supported.')
 
     mms_endpoint = base_url + '/services/export'
-    export_payload = {"computeType": compute_type}
-    resp = ClientBase._execute_func(get_requests_session().post, mms_endpoint, params=params, headers=headers,
+    export_payload = {"computeType": ACI_WEBSERVICE_TYPE}
+    try:
+        resp = ClientBase._execute_func(get_requests_session().post, mms_endpoint, headers=headers,
                                     json=export_payload)
+    except:
+        raise WebserviceException(f'Cannot get service {service_name}')
 
     if resp.status_code == 202:
+        service_entity = AciWebservice.deserialize(ws, service)
         service_entity.state = 'Exporting'
-        operation_url = _get_mms_url(service_entity.workspace) + f'/operations/{resp.content.decode("utf-8")}'
-        service_entity._operation_endpoint = operation_url
+        service_entity._operation_endpoint = _get_mms_url(service_entity.workspace) + f'/operations/{resp.content.decode("utf-8")}'
         state, _, operation = service_entity._wait_for_operation_to_complete(show_output, timeout_seconds)
         if state == "Succeeded":
             export_folder = operation.get("resourceLocation").split("/")[-1]
@@ -87,7 +66,6 @@ def export(ws: Workspace,
                                   'Response Code: {}\n'
                                   'Headers: {}\n'
                                   'Content: {}'.format(resp.status_code, resp.headers, resp.content))
-
 
 def overwrite_parameters(parms: dict,
                          endpoint_name: str = None,
@@ -126,8 +104,7 @@ if __name__ == "__main__":
         parser.add_argument('-w', '--workspace', type=str, help='workspace name')
         parser.add_argument('-g', '--resource-group', type=str, help='resource group name')
         parser.add_argument('-s', '--subscription', type=str, help='subscription id')
-        parser.add_argument('-c', '--compute-type', default=None, type=str,
-                            help='compute type to export, available types is ACI for now')
+        parser.add_argument('-sn', '--service-name', default=None, type=str, help='service name to be migrated')
         parser.add_argument('-e', '--export-json', action='store_true', dest='export_json',
                             help='show export result in json')
         parser.add_argument('-mp', '--parameters-path', type=str, help='parameters file path')
@@ -142,8 +119,8 @@ if __name__ == "__main__":
     args = parse_args()
 
     if args.export:
-        worskpace = Workspace.get(name=args.workspace, resource_group=args.resource_group, subscription_id=args.subscription)
-        storage_account, blob_folder = export(worskpace, args.compute_type, show_output=not args.export_json)
+        workspace = Workspace.get(name=args.workspace, resource_group=args.resource_group, subscription_id=args.subscription)
+        storage_account, blob_folder = export(workspace, args.service_name, show_output=not args.export_json)
         if args.export_json:
             print(json.dumps({"storage_account": storage_account, "blob_folder": blob_folder}))
 
