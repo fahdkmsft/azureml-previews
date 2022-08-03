@@ -1,5 +1,10 @@
 
 
+## ❗Important
+
+Preview docs for AzureML Registries has moved here: https://github.com/Azure/azureml-registries
+This page will no longer be maintained.
+
 ### Welcome
 
 * Request access to Registries preview: https://forms.office.com/r/VrX6rE2Ut0
