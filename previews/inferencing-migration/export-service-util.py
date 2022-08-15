@@ -42,7 +42,7 @@ def export(ws: Workspace,
         raise WebserviceException(f'service {service_name} is unhealthy, migration is not supported.')
 
     mms_endpoint = base_url + '/services/export'
-    export_payload = {"computeType": ACI_WEBSERVICE_TYPE}
+    export_payload = {"computeType": ACI_WEBSERVICE_TYPE, "serviceName": service_name}
     try:
         resp = ClientBase._execute_func(get_requests_session().post, mms_endpoint, headers=headers,
                                     json=export_payload)
