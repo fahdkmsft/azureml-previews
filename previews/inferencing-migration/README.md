@@ -19,7 +19,7 @@ With our migration tool, we'll map the CPU/Memory requirement to corresponding S
 | CPU reqeust | Memory request in GB | SKU |
 | :----| :---- | :---- |
 | (0, 1] | (0, 1.6] | DS1 V2 |
-| (1, 2] | (1.6,2] | F2s V2 |
+| (1, 2] | (1.6, 2] | F2s V2 |
 | (1, 2] | (2, 5] | DS2 V2 |
 | (1, 2] | (5, 16] | E2s V3 |
 | (2, 4] | (0, 6] | F4s V2 |
@@ -34,6 +34,11 @@ For private workspace and VNET scenarios, please check [Use network isolation wi
 2. ACI webservices deployed through deploy_from_model and deploy_from_image are not supported by the migration tool, please redeploy manually through CLI/SDK V2.
 
 ## Migration Steps
+
+### With our [CLI](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints) or [SDK preview](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoint-sdk-v2)
+You can find our examples on [azureml-examples](https://github.com/Azure/azureml-examples). Specifically, this is the [SDK example for managed online endpoint](https://github.com/Azure/azureml-examples/tree/main/sdk/endpoints/online/managed).
+
+### With our migration tool
 Here're the steps to use these scripts.
 
 1. Linux/WSL to run the bash script.
