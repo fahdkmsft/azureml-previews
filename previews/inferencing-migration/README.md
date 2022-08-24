@@ -66,3 +66,6 @@ Both costs are calculated by month.
 | (3, 4] | (6, 12] | ($137.751, $157.242] | DS3 V2 | $167.170 | $108.165 | $70.781 |
 | (2, 3] | (12, 16] | ($127.677, $140.671] | E4s V3 | $194.180 | $114.165 | $73.000 |
 | (3, 4] | (12, 16] | ($157.242, $170.236] | E4s V3 | $194.180 | $114.165 | $73.000 |
+
+## Contact us
+Reach out to us: moeonboard@microsoft.com if you have any questions or feedback.
