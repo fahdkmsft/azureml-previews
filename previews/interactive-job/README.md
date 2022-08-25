@@ -1,5 +1,5 @@
 ## Overview
-ML model training usually requires lots of experimentation and iterations. With the new AzureML interactive job experience, data scientists can now use CLI v2 or AzureML Studio Portal to quickly reserve their required compute resources with custom environment, access the job container via different training applications including **Jupyter, JupyterLab, TensorBoard, and VS Code** (VS Code will be available in August) to iterate on training scripts, monitor the training progress or debug the job remotely like they usually do on their local machines.
+ML model training usually requires lots of experimentation and iterations. With the new AzureML interactive job experience, data scientists can now use CLI v2 or AzureML Studio Portal to quickly reserve their required compute resources with custom environment, access the job container via different training applications including **JupyterLab, TensorBoard, and VS Code** to iterate on training scripts, monitor the training progress or debug the job remotely like they usually do on their local machines.
 
 Interactive training is supported on **AzureML Compute Cluster**, **Automatic Compute**, and **Azure Arc-enabled Kubernetes Cluster** and will be available on Compute Instance in later release.
 
@@ -22,14 +22,14 @@ environment_variables:
   AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True' 
 compute: azureml:<your compute name>
 services:
-  "my_jupyter":
-    job_service_type: "Jupyter" # Jupyter Notebook
+  "my_jupyterlab":
+    job_service_type: "JupyterLab"
   "my_tensorboard":
     job_service_type: "TensorBoard"
     properties:
       logDir: "~/tblog" # where you want to store the TensorBoard output 
-  "my_jupyterlab":
-    job_service_type: "JupyterLab"
+  "my_vscode":
+    job_service_type: VSCode
 ```
 Please make sure to set the environment variable `AZUREML_COMMON_RUNTIME_USE_INTERACTIVE_CAPABILITY: 'True'` and `AZUREML_COMPUTE_USE_COMMON_RUNTIME: 'True'`in order to enable the interactive capability in preview. The `services` section specifies the training applications you want to interact with.  
 You can put `sleep <specific time>` at the end of the command to speicify the amount of time you want to reserve the compute resource. The format follows: 
@@ -69,8 +69,7 @@ Clicking the applications in the panel opens a new tab for the applications. Ple
 ![screenshot apps-panel](./media/appspanel.png)
 
 ### Interact with the applications
-1. You are landed in the user container under your working directory, where you can access your code, inputs, outputs, and logs. You can open a terminal from Jupyter Notebook or Jupyter Lab and start interacting within the job container. You can also directly iterate your training script with Jupyter Notebook or Jupyter Lab. 
-![screenshot jupyter](./media/jupyter.png)
+1. You are landed in the user container under your working directory, where you can access your code, inputs, outputs, and logs. You can open a terminal from Jupyter Lab and start interacting within the job container. You can also directly iterate your training script with Jupyter Lab. 
 ![screenshot jupyterlab](./media/jupyterlab.png)
 1. If you have logged tensorflow events for your job, you can use TensorBoard to monitor the metrics when your job is running.
 1. If you run into any issues while connecting to the applications, the interactive capability and applications logs can be found from **system_logs->interactive_capability** under **Outputs + logs** tab.
