@@ -6,6 +6,7 @@ Interactive training is supported on **AzureML Compute Cluster**, **Automatic Co
 ## Prerequisites
 - To use the CLI (v2), you must have an Azure subscription. If you don't have an Azure subscription, create a free account before you begin. Try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/) today.
 - [Install and set up CLI (v2)](how-to-configure-cli.md).
+- To use **VS Code**, please open VS Code and install Azure Machine Learning and Azure Machine Learning - Remote extension. Switch the extensions to pre release versions using the instructions [here](https://code.visualstudio.com/updates/v1_63#_pre-release-extensions). 
 - If you are under VNet, you must [enable outbound traffic](https://docs.microsoft.com/azure/machine-learning/how-to-access-azureml-behind-firewall?tabs=ipaddress%2Cpublic#outbound-configuration) for UDP 5831 to AzureMachineLearning in order to use this feature.
 
 ## Get started
