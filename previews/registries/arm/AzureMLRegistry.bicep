@@ -195,6 +195,7 @@ resource rgOwnerRoleAssign 'Microsoft.Authorization/roleAssignments@2020-04-01-p
   properties: {
     roleDefinitionId: roles.Owner
     principalId: amlRegistry.identity.principalId
+    principalType: 'ServicePrincipal'
   }
   scope: resourceGroup()
   dependsOn: [
@@ -207,6 +208,7 @@ resource rgBlobContributorRoleAssign 'Microsoft.Authorization/roleAssignments@20
   properties: {
     roleDefinitionId: roles.BlobDataContributor
     principalId: amlRegistry.identity.principalId
+    principalType: 'ServicePrincipal'
   }
   scope: resourceGroup()
   dependsOn: [
