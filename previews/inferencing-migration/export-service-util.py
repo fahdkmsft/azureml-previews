@@ -3,12 +3,12 @@ import argparse
 import tempfile
 from azureml.core import Workspace
 from azureml.exceptions import WebserviceException
-from azureml._model_management._util import _get_mms_url
-from azureml._model_management._util import get_requests_session
-from azureml._model_management._constants import ACI_WEBSERVICE_TYPE, UNKNOWN_WEBSERVICE_TYPE
-from azureml._model_management._constants import MMS_SYNC_TIMEOUT_SECONDS
-from azureml.core.webservice import Webservice, AciWebservice
+from azureml._model_management._util import _get_mms_url, get_requests_session
+from azureml._model_management._constants import AKS_WEBSERVICE_TYPE, ACI_WEBSERVICE_TYPE, UNKNOWN_WEBSERVICE_TYPE, MMS_SYNC_TIMEOUT_SECONDS
+from azureml.core.webservice import Webservice, AciWebservice, AksWebservice
 from azureml._restclient.clientbase import ClientBase
+
+MIGRATION_WEBSERVICE_TYPES = [AKS_WEBSERVICE_TYPE, ACI_WEBSERVICE_TYPE]
 
 def export(ws: Workspace,
            service_name: str = None,
@@ -39,10 +39,17 @@ def export(ws: Workspace,
         content = resp.content.decode("utf-8")
     service = json.loads(content)
     if service['state'] != 'Healthy':
-        raise WebserviceException(f'service {service_name} is unhealthy, migration is not supported.')
+        raise WebserviceException(f'service {service_name} is unhealthy, migration with this tool is not supported.')
+    compute_type = service['computeType']
+    if compute_type.upper() not in MIGRATION_WEBSERVICE_TYPES:
+        raise WebserviceException('Invalid compute type "{}". Valid compute types are "{}"'
+                                  .format(compute_type, ",".join(MIGRATION_WEBSERVICE_TYPES)))
+    compute_name = service_name
+    if compute_type.upper() == AKS_WEBSERVICE_TYPE:
+        compute_name = service['computeName']
 
     mms_endpoint = base_url + '/services/export'
-    export_payload = {"computeType": ACI_WEBSERVICE_TYPE, "serviceName": service_name}
+    export_payload = {"serviceName": service_name}
     try:
         resp = ClientBase._execute_func(get_requests_session().post, mms_endpoint, headers=headers,
                                     json=export_payload)
@@ -50,7 +57,11 @@ def export(ws: Workspace,
         raise WebserviceException(f'Cannot get service {service_name}')
 
     if resp.status_code == 202:
-        service_entity = AciWebservice.deserialize(ws, service)
+        service_entity = None
+        if compute_type.upper() == AKS_WEBSERVICE_TYPE:
+            service_entity = AksWebservice(ws, service_name)
+        elif compute_type.upper() == ACI_WEBSERVICE_TYPE:
+            service_entity = AciWebservice(ws, service_name)
         service_entity.state = 'Exporting'
         service_entity._operation_endpoint = _get_mms_url(service_entity.workspace) + f'/operations/{resp.content.decode("utf-8")}'
         state, _, operation = service_entity._wait_for_operation_to_complete(show_output, timeout_seconds)
@@ -60,7 +71,7 @@ def export(ws: Workspace,
             if show_output:
                 print(f"Services have been exported to storage account: {storage_account} \n"
                       f"Folder path: azureml/{export_folder}")
-            return storage_account.split("/")[-1], export_folder
+            return storage_account.split("/")[-1], export_folder, compute_name
     else:
         raise WebserviceException('Received bad response from Model Management Service:\n'
                                   'Response Code: {}\n'
@@ -120,9 +131,9 @@ if __name__ == "__main__":
 
     if args.export:
         workspace = Workspace.get(name=args.workspace, resource_group=args.resource_group, subscription_id=args.subscription)
-        storage_account, blob_folder = export(workspace, args.service_name, show_output=not args.export_json)
+        storage_account, blob_folder, v1_compute = export(workspace, args.service_name, show_output=not args.export_json)
         if args.export_json:
-            print(json.dumps({"storage_account": storage_account, "blob_folder": blob_folder}))
+            print(json.dumps({"storage_account": storage_account, "blob_folder": blob_folder, "v1_compute": v1_compute}))
 
     if args.overwrite_parameters:
         with open(args.parameters_path) as f:

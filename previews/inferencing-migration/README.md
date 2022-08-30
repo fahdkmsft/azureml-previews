@@ -1,8 +1,8 @@
-# Migration steps for ACI webservice to Managed online endpoint
+# Migration steps for ACI/AKS webservice to Managed online endpoint
 
 [Managed online endpoints](https://docs.microsoft.com/azure/machine-learning/concept-endpoints) help to deploy your ML models in a turnkey manner. Managed online endpoints work with powerful CPU and GPU machines in Azure in a scalable, fully managed way. Managed online endpoints take care of serving, scaling, securing, and monitoring your models, freeing you from the overhead of setting up and managing the underlying infrastructure. Details can be found on [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints).
 
-You can deploy directly to the new compute target with your previous models and environments, or leverage the [scripts](https://github.com/Azure/azureml-previews/blob/main/previews/inferencing-migration/export-service.sh) provided by us to export the current services then deploy to the new compute. For customers who regularly create and delete ACI services, we strongly recommend the prior solution. Please notice that the **scoring URL will be changed after migration**. For example, the socring url for ACI webservice is like "http://aaaaaa-bbbbb-1111.westus.azurecontainer.io/score", the new one is like "https://endpoint-name.westus.inference.ml.azure.com/score".
+You can deploy directly to the new compute target with your previous models and environments, or leverage the [scripts](https://github.com/Azure/azureml-previews/blob/main/previews/inferencing-migration/export-service.sh) provided by us to export the current services then deploy to the new compute. For customers who regularly create and delete ACI services, we strongly recommend the prior solution. Please notice that the **scoring URL will be changed after migration**. For example, the scoring url for ACI web service is like "http://aaaaaa-bbbbb-1111.westus.azurecontainer.io/score", the scoring url for AKS web service is like "http://1.2.3.4:80/api/v1/service/aks-service/score", while the new one is like "https://endpoint-name.westus.inference.ml.azure.com/score".
 
 ## Supported Scenarios and Differences
 
@@ -36,16 +36,17 @@ For private workspace and VNET scenarios, please check [Use network isolation wi
 ## Migration Steps
 
 ### With our [CLI](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints) or [SDK preview](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoint-sdk-v2)
+Redeploy manually with your model fils and environment definition.
 You can find our examples on [azureml-examples](https://github.com/Azure/azureml-examples). Specifically, this is the [SDK example for managed online endpoint](https://github.com/Azure/azureml-examples/tree/main/sdk/endpoints/online/managed).
 
 ### With our migration tool
-Here're the steps to use these scripts.
+Here're the steps to use these scripts. Please notice that the new endpoint will be created under the **same workspace**.
 
 1. Linux/WSL to run the bash script.
 2. Install [Python SDK V1](https://docs.microsoft.com/python/api/overview/azure/ml/install?view=azure-ml-py) to run the python script.
 3. Install [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli).
 4. Clone this repository to your local env, git clone https://github.com/Azure/azureml-previews.
-5. Edit the subscription/resourcegroup/workspace/service name info in export-service.sh, also the expected new endpoint name and deployment name. We recommend that the new endpoint name is different from the previous one.
+5. Edit the subscription/resourcegroup/workspace/service name info in migrate-service.sh, also the expected new endpoint name and deployment name. We recommend that the new endpoint name is different from the previous one, otherwise, the original service will not be displayed if you check your endpoints on portal.
 6. Execute the bash script, it will take about 5-10 minutes to finish the new deployment.
 7. After the deployment is done successfully, you can verify the endpoint with [invoke command](https://docs.microsoft.com/cli/azure/ml/online-endpoint?view=azure-cli-latest#az-ml-online-endpoint-invoke).
 
