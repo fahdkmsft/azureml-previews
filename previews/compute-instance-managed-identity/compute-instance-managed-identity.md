@@ -1,5 +1,7 @@
 # Compute Instance Managed Identity
 
+<img src="./ci_demo.gif" width = "600">
+
 ## How it works
 
 You can create a compute instance with managed identity enabled. This feature is useful in a case where users should have restricted access to data, only from the compute instance, but not directly as Azure AD users. Also, you can simplify and reduce the number of role assignments by creating a user-assigned managed identity to access a common storage account, and assigning that identity to many compute instances. 
