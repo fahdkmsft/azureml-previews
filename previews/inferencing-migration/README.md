@@ -1,4 +1,5 @@
 # Migration steps for ACI/AKS webservice to Managed online endpoint
+### <u>Please notice that this folder will NOT be updated since September of 2022. The latest version can be found on [auzreml-examples](https://github.com/Azure/azureml-examples/tree/main/migration/inferencing-migration).</u>
 
 [Managed online endpoints](https://docs.microsoft.com/azure/machine-learning/concept-endpoints) help to deploy your ML models in a turnkey manner. Managed online endpoints work with powerful CPU and GPU machines in Azure in a scalable, fully managed way. Managed online endpoints take care of serving, scaling, securing, and monitoring your models, freeing you from the overhead of setting up and managing the underlying infrastructure. Details can be found on [Deploy and score a machine learning model by using an online endpoint](https://docs.microsoft.com/azure/machine-learning/how-to-deploy-managed-online-endpoints).
 
