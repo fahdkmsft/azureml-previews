@@ -20,3 +20,9 @@ Note that updating managed identity forces the compute instance to restart.
 ## Enrolling to private preview
 
 Contact Roope Astala (roastala), and provide customer use case and Azure subscription ID for allow-listing.
+
+## Troubleshooting
+
+If you cannot use managed identity to access data, ensure that:
+ 1. Compute instance has identity enabled. On compute instance, check client id environment variable using ```os.environ.get("DEFAULT_IDENTITY_CLIENT_ID")```
+ 2. Managed identity has RBAC permissions to access the storage, such as Storage Blocb Data Reader role.
