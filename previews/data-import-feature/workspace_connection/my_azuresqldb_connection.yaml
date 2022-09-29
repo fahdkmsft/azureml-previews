@@ -1,0 +1,7 @@
+name: my_azuresqldb_connection
+type: azure_sql_db
+target: Server=tcp:<your server name>.database.windows.net,1433;Database=<your_db>;Trusted_Connection=False;Encrypt=True;Connection Timeout=30
+credentials:
+  type: username_password
+  username: <YOUR_USERNAME>
+  password: <password>

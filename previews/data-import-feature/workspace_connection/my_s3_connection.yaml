@@ -1,0 +1,7 @@
+name: my_s3_connection
+type: s3
+target: <your_s3_URL>
+credentials:
+  type: access_key
+  access_key_id: <your_access_key_id>
+  secret_access_key: <your_access_key>

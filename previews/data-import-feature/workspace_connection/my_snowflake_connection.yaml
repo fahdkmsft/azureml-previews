@@ -1,0 +1,7 @@
+name: my_snowflake_connection
+type: snowflake
+target: jdbc:snowflake://<your server name>.snowflakecomputing.com/?db=<YOUR_DB_NAME>&warehouse=<YOUR_WH>
+credentials:
+  type: username_password
+  username: <YOUR_USERNAME>
+  password: <password>

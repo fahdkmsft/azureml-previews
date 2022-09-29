@@ -1,0 +1,10 @@
+type: import
+description: "test_snowflake"
+display_name: "test_snowflake"
+source:
+  type: snowflake
+  connection: azureml:<my_connection_name>
+  query: <your_query_to_replace_this_example- select * FROM TPCH_SF1000.PARTSUPP>
+output:
+  type: mltable
+  path: azureml://datastores/workspaceblobstore/paths/{name}/output_dir/snowflake/

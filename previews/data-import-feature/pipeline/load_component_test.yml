@@ -1,0 +1,17 @@
+## IMPORTANT: this file and accompanying assets are the source for snippets in https://docs.microsoft.com/azure/machine-learning!
+## Please reach out to the Azure ML docs & samples team before editing for the first time.
+
+# <component>
+name: load_imported_data
+display_name: LoadImportedData
+version: 1
+type: command
+inputs:
+  imported_data:
+    type: mltable
+code: ./
+environment:
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  conda_file: mltable_environment.yaml
+command: python read_mltable.py --input_data ${{inputs.imported_data}}
+# </component>

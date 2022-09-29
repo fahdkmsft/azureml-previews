@@ -1,0 +1,7 @@
+name: my_azuresynapseanalytics_connection
+type: azure_synapse_analytics
+target: Server=tcp:<your server name>.sql.azuresynapse.net,1433;Database=testdb;Trusted_Connection=False;Encrypt=True;Connection Timeout=30
+credentials:
+  type: username_password
+  username: <YOUR_USERNAME>
+  password: <password>

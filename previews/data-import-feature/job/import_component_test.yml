@@ -1,0 +1,22 @@
+$schema: http://azureml/sdk-2-0/ImportComponent.json
+type: import
+
+name: microsoft_samples_import_component_basic
+display_name: ImportComponentBasic
+description: This is the basic import component
+tags:
+  tag: tagvalue
+  owner: dataintegration
+
+version: 0.0.1
+
+source:
+  type:
+    type: string
+  connection:
+    type: string
+  query:
+    type: string
+
+output:
+  type: mltable

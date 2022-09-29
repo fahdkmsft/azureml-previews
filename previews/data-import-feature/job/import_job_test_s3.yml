@@ -1,0 +1,10 @@
+type: import
+description: "test_s3"
+display_name: "test_s3"
+source:
+  type: s3
+  connection: azureml:<my_connection_name>
+  path: <your_path>/*
+output:
+  type: uri_folder
+  path: azureml://datastores/workspaceblobstore/paths/{name}/output_dir/s3/

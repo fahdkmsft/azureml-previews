@@ -1,0 +1,30 @@
+$schema: http://azureml/sdk-2-0/PipelineJob.json
+type: pipeline
+
+description: 'import_pipeline_test_description'
+compute: azureml:cpu-cluster
+identity:
+  type: Managed
+
+jobs:
+  import_step:
+    type: import
+    source:
+      type: azuresqldb
+      query: >-
+        <your_query_to_replace_this_example- select * FROM region>
+      connection: azureml:<your_connection_name>
+    output:
+      type: mltable
+
+  load_step:
+    type: command
+    inputs:
+      imported_data:
+        type: mltable
+        path: ${{parent.jobs.import_step.outputs.output}}
+    code: ./
+    environment:
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+      conda_file: mltable_environment.yaml
+    command: python read_mltable.py --input_data ${{inputs.imported_data}}
