@@ -8,11 +8,11 @@
     
     a. [Compute] The VS Code Web link is under the Applications column in the list of your compute instances. 
 
-    ![Compute Tab Entrypoint](https://raw.githubusercontent.com/microsoft/vscode-tools-for-ai/master/media/remote_extension_web_readme/compute_link.png)
+    ![Compute Tab Entrypoint](./media/compute_link.png)
 
     b. [Notebooks] Click on the "Editors" dropdown and choose the "Edit in VS Code Web" option. 
 
-    ![Notebooks Tab Entrypoint](https://raw.githubusercontent.com/microsoft/vscode-tools-for-ai/master/media/remote_extension_web_readme/notebook_link.png)
+    ![Notebooks Tab Entrypoint](./media/notebook_link.png)
 
 3. A new vscode.dev tab will be open and the Azure Machine Learning – Remote (Web) extension will set up your connection.
 ![vscode web compute instance connection](./media/vscode-web-ci.png)
